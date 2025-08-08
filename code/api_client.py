@@ -1,0 +1,31 @@
+"""
+Shared API client module.
+This contains the core API functionality that other modules can use.
+"""
+
+from os import environ
+import anthropic
+
+# Define required environment variables.
+API_KEY = environ.get("ANTHROPIC_API_KEY", "")
+MODEL_NAME = environ.get("ANTHROPIC_MODEL_NAME", "")
+
+client = anthropic.Anthropic(api_key=API_KEY)
+
+
+def validate_environment_variables():
+    if not environ.get("ANTHROPIC_API_KEY"):
+        raise ValueError("API_KEY is not set")
+    if not environ.get("ANTHROPIC_MODEL_NAME"):
+        raise ValueError("OPENAI_MODEL is not set")
+
+
+def get_completion(prompt: str, system_prompt="", max_tokens=2000):
+    message = client.messages.create(
+        model=MODEL_NAME,
+        max_tokens=max_tokens,
+        temperature=0.0,
+        system=system_prompt,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return message.content[0].text
