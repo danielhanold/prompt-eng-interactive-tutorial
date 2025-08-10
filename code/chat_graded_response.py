@@ -5,10 +5,11 @@ import re
 grade_variants_human_readable = {
     "count_to_three": "Make me count to three",
     "respond_like_a_3_year_old": "Respond like a 3-year old",
+    "more_than_800_words": "Response has to be longer than 800 words",
 }
 
 
-def single_chat(variant, system_prompt=""):
+def single_chat(variant: str, system_prompt=""):
     user_prompt = ""
     while not user_prompt:
         user_prompt = input(
@@ -20,13 +21,17 @@ def single_chat(variant, system_prompt=""):
     return get_completion(user_prompt, system_prompt)
 
 
-def grade_exercise(text, variant):
+def grade_exercise(text: str, variant: str):
     match variant:
         case "count_to_three":
             pattern = re.compile(r"^(?=.*1)(?=.*2)(?=.*3).*$", re.DOTALL)
             return bool(pattern.match(text))
         case "respond_like_a_3_year_old":
             return bool(re.search(r"giggles", text) or re.search(r"soo", text))
+        case "more_than_800_words":
+            trimmed = text.strip()
+            words = len(trimmed.split())
+            return words >= 800
 
 
 def chat_with_grading(variant, system_prompt=""):
