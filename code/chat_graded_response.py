@@ -2,7 +2,10 @@ from api_client import get_completion
 import re
 
 # Define a map of variants and human-readable prompts:
-grade_variants_human_readable = {"count_to_three": "Make me count to three"}
+grade_variants_human_readable = {
+    "count_to_three": "Make me count to three",
+    "respond_like_a_3_year_old": "Respond like a 3-year old",
+}
 
 
 def single_chat(variant, system_prompt=""):
@@ -22,6 +25,8 @@ def grade_exercise(text, variant):
         case "count_to_three":
             pattern = re.compile(r"^(?=.*1)(?=.*2)(?=.*3).*$", re.DOTALL)
             return bool(pattern.match(text))
+        case "respond_like_a_3_year_old":
+            return bool(re.search(r"giggles", text) or re.search(r"soo", text))
 
 
 def chat_with_grading(variant, system_prompt=""):

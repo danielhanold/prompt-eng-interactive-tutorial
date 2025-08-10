@@ -15,7 +15,8 @@ def main():
     # basic_chat_loop("Your respond should sound like a 3-year old.")
 
     # Chat with grading.
-    chat_with_grading("count_to_three")
+    # chat_with_grading("count_to_three")
+    chat_with_grading("respond_like_a_3_year_old", "Respond like a 3 year old")
 
 
 if __name__ == "__main__":
