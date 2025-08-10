@@ -5,7 +5,7 @@ import re
 grade_variants_human_readable = {"count_to_three": "Make me count to three"}
 
 
-def single_chat(variant, system_prompt=""):
+def single_chat(variant, system_prompt=None):
     user_prompt = ""
     while not user_prompt:
         user_prompt = input(
@@ -13,8 +13,10 @@ def single_chat(variant, system_prompt=""):
         )
         if not user_prompt:
             print("User prompt cannot be empty. Enter something!")
-
-    return get_completion(user_prompt, system_prompt)
+    if system_prompt is None:
+        return get_completion(user_prompt)
+    else:
+        return get_completion(user_prompt, system_prompt)
 
 
 def grade_exercise(text, variant):

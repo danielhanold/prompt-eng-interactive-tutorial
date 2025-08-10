@@ -3,6 +3,7 @@ Shared API client module.
 This contains the core API functionality that other modules can use.
 """
 
+from constants import SYSTEM_PROMPT_DEFAULT
 from os import environ
 import anthropic
 
@@ -20,7 +21,7 @@ def validate_environment_variables():
         raise ValueError("OPENAI_MODEL is not set")
 
 
-def get_completion(prompt: str, system_prompt="", max_tokens=2000):
+def get_completion(prompt: str, system_prompt=SYSTEM_PROMPT_DEFAULT, max_tokens=2000):
     message = client.messages.create(
         model=MODEL_NAME,
         max_tokens=max_tokens,
