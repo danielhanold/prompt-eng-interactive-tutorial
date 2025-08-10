@@ -12,8 +12,7 @@ def main():
     # basic_chat_loop()
 
     # Basic chat option with different system prompts.
-    # basic_chat(SYSTEM_PROMPT)
-    # basic_chat("Your respond should sound like a 3-year old.")
+    # basic_chat_loop("Your respond should sound like a 3-year old.")
 
     # Chat with grading.
     chat_with_grading("count_to_three")

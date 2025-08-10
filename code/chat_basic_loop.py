@@ -1,7 +1,7 @@
 from api_client import get_completion
 
 
-def basic_chat_loop(system_prompt=None):
+def basic_chat_loop(system_prompt=""):
     is_first_run = True
     while True:
         glue_word = "your" if is_first_run else "another"
@@ -13,8 +13,5 @@ def basic_chat_loop(system_prompt=None):
             user_prompt = default_query
 
         print("Claude's response:")
-        if system_prompt is None:
-            print(get_completion(user_prompt))
-        else:
-            print(get_completion(user_prompt, system_prompt))
+        print(get_completion(user_prompt, system_prompt))
         is_first_run = False
