@@ -1,26 +1,11 @@
-from api_client import get_completion, validate_environment_variables
+from api_client import validate_environment_variables
+from chat_basic_loop import basic_chat_loop
 from chat_graded_response import chat_with_grading
 
 # Define system prompts.
 SYSTEM_PROMPT_DEFAULT = "Keep your answer very short. Don't include a lot of background details that the user did not ask for."
 SYSTEM_PROMPT_QUESTIONING = "Your answer should always be a series of critical thinking questions that further the conversation. (do not provide answers to your questions). Do not actually answer the user question."
 SYSTEM_PROMPT_COMEDIAN = "You are a comedian. You are funny and you make people laugh. You are also a bit of a smart ass. Answer every question in the form of a joke."
-
-
-def basic_chat_loop(system_prompt=""):
-    is_first_run = True
-    while True:
-        glue_word = "your" if is_first_run else "another"
-        default_query = "What is Celine Dion's single most popular song?"
-        user_prompt = (
-            input(f"\nEnter {glue_word} query [{default_query}]: ") or default_query
-        )
-        if not user_prompt:
-            user_prompt = default_query
-
-        print("Claude's response:")
-        print(get_completion(user_prompt, system_prompt))
-        is_first_run = False
 
 
 def main():
