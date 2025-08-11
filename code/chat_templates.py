@@ -5,22 +5,20 @@ TEMPLATE_DATA = {
     "animal_sound": {
         "template_prefix": "I will tell you the name of an animal. Please respond with the noise that this animal makes:",
         "template_suffix": "",
-        "input": "Chatbot will tell you the noise an animal makes\nEnter the name of an animal: ",
+        "input": "Chatbot will tell you the noise an animal makes\nEnter the name of an animal",
         "input_blank": "You have to actually enter the name of an animal. Please re-do!",
     },
     "polite_email": {
-        "template_prefix": "Yo Claude.",
+        "template_prefix": "For Claude.",
         "template_suffix": "<----- Make this email more polite but don't change anything else about it.",
-        "input": "Enter a rude email message that should be polished to make it sound more polite: ",
+        "input": "Enter a rude email message that should be polished to make it sound more polite",
         "input_blank": "You have to actually enter the a message - it cannot be blank!",
     },
 }
 
 
 def basic_chat_template(
-    template_name: str,
-    system_prompt="",
-    max_tokens=2000,
+    template_name: str, system_prompt="", max_tokens=2000, default_query=""
 ):
     """Private helper function to handle a single chat interaction.
 
@@ -40,9 +38,18 @@ def basic_chat_template(
         raise ValueError("Template name is not valid.")
 
     print("\n----------------------------------------------------------------")
+    default_query_display = "None" if default_query == "" else default_query
     user_input = ""
     while not user_input:
-        user_input = input(TEMPLATE_DATA[template_name]["input"])
+        user_input = input(
+            f"{TEMPLATE_DATA[template_name]["input"]} [{default_query_display}]: "
+        )
+
+        # If a non-empty default query was provided, use it.
+        if not user_input:
+            user_input = default_query
+
+        # If we're still left with no input, ask the user to provide one.
         if not user_input:
             print(TEMPLATE_DATA[template_name]["input_blank"])
 

@@ -56,6 +56,7 @@ def main():
     # Chatper 4: Separating Data & Instructions
     ###
     basic_chat_template("animal_sound")
+    # basic_chat_template("polite_email")
 
 
 if __name__ == "__main__":
