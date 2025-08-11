@@ -37,12 +37,13 @@ def basic_chat_template(
     if template_name not in TEMPLATE_DATA.keys():
         raise ValueError("Template name is not valid.")
 
+    # Get user input.
     print("\n----------------------------------------------------------------")
     default_query_display = "None" if default_query == "" else default_query
     user_input = ""
     while not user_input:
         user_input = input(
-            f"{TEMPLATE_DATA[template_name]["input"]} [{default_query_display}]: "
+            f"{TEMPLATE_DATA[template_name]["input"]} [Default: {default_query_display}]: "
         )
 
         # If a non-empty default query was provided, use it.
@@ -53,11 +54,11 @@ def basic_chat_template(
         if not user_input:
             print(TEMPLATE_DATA[template_name]["input_blank"])
 
-    # Generate template.
+    # Generate prompt based on template and user_input.
     user_prompt = " ".join(
         [
             TEMPLATE_DATA[template_name]["template_prefix"],
-            user_input,
+            f"<user_input>{user_input}</user_input>",
             TEMPLATE_DATA[template_name]["template_suffix"],
         ]
     )
