@@ -3,10 +3,17 @@ from api_client import get_completion
 
 TEMPLATE_DATA = {
     "animal_sound": {
-        "template": "I will tell you the name of an animal. Please respond with the noise that animal makes.",
-        "input": f"Chatbot will tell you the noise an animal makes\nEnter the name of an animal: ",
+        "template_prefix": "I will tell you the name of an animal. Please respond with the noise that this animal makes:",
+        "template_suffix": "",
+        "input": "Chatbot will tell you the noise an animal makes\nEnter the name of an animal: ",
         "input_blank": "You have to actually enter the name of an animal. Please re-do!",
-    }
+    },
+    "polite_email": {
+        "template_prefix": "Yo Claude.",
+        "template_suffix": "<----- Make this email more polite but don't change anything else about it.",
+        "input": "Enter a rude email message that should be polished to make it sound more polite: ",
+        "input_blank": "You have to actually enter the a message - it cannot be blank!",
+    },
 }
 
 
@@ -33,17 +40,24 @@ def basic_chat_template(
         raise ValueError("Template name is not valid.")
 
     print("\n----------------------------------------------------------------")
-    user_prompt = ""
-    while not user_prompt:
-        user_prompt = input(TEMPLATE_DATA[template_name]["input"])
-        if not user_prompt:
+    user_input = ""
+    while not user_input:
+        user_input = input(TEMPLATE_DATA[template_name]["input"])
+        if not user_input:
             print(TEMPLATE_DATA[template_name]["input_blank"])
 
     # Generate template.
-    user_prompt = f"{TEMPLATE_DATA[template_name]["template"]}. Animal: {user_prompt}"
+    user_prompt = " ".join(
+        [
+            TEMPLATE_DATA[template_name]["template_prefix"],
+            user_input,
+            TEMPLATE_DATA[template_name]["template_suffix"],
+        ]
+    )
 
     # Print response.
-    print(
-        f"\nClaude's response\nMax tokens: {max_tokens}\nSystem prompt: {system_prompt or "None"}"
-    )
+    print(f"\nClaude's response\nMax tokens: {max_tokens}")
+    print(f"User prompt: {user_prompt}")
+    print(f"System prompt: {system_prompt or "None"}")
+
     print(f"===> {get_completion(user_prompt, system_prompt, max_tokens)}")
