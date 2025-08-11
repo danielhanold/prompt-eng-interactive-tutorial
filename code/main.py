@@ -1,6 +1,7 @@
 from api_client import validate_environment_variables
 from chat_basic import basic_chat, basic_chat_loop
 from chat_graded_response import chat_with_grading
+from chat_templates import basic_chat_template
 from constants import SYSTEM_PROMPT_DEFAULT
 
 
@@ -37,19 +38,24 @@ def main():
     #     "What do you think about skateboarding",
     # )
 
-    # In earlier versions of Claude, the model would not be able to answer this question.
-    basic_chat(
-        "",
-        2000,
-        "Jack is looking at Anne. Anne is looking at George. Jack is married, George is not, and we don't know if Anne is married. Is a married person looking at an unmarried person?",
-    )
+    # # In earlier versions of Claude, the model would not be able to answer this question.
+    # basic_chat(
+    #     "",
+    #     2000,
+    #     "Jack is looking at Anne. Anne is looking at George. Jack is married, George is not, and we don't know if Anne is married. Is a married person looking at an unmarried person?",
+    # )
 
-    # With a system prompt, the model can answer the question.
-    basic_chat(
-        "You are a logic bot designed to answer complex logic problems.",
-        2000,
-        "Jack is looking at Anne. Anne is looking at George. Jack is married, George is not, and we don't know if Anne is married. Is a married person looking at an unmarried person?",
-    )
+    # # With a system prompt, the model can answer the question.
+    # basic_chat(
+    #     "You are a logic bot designed to answer complex logic problems.",
+    #     2000,
+    #     "Jack is looking at Anne. Anne is looking at George. Jack is married, George is not, and we don't know if Anne is married. Is a married person looking at an unmarried person?",
+    # )
+
+    ###
+    # Chatper 4: Separating Data & Instructions
+    ###
+    basic_chat_template("animal_sound")
 
 
 if __name__ == "__main__":
