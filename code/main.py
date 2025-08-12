@@ -1,6 +1,6 @@
 from api_client import validate_environment_variables
 from chat_basic import basic_chat, basic_chat_loop
-from chat_graded_response import chat_with_grading
+from chat_grading import chat_with_grading, single_chat
 from chat_templates import basic_chat_template
 from constants import SYSTEM_PROMPT_DEFAULT
 
@@ -20,7 +20,9 @@ def main():
 
     # Chat with grading.
     # chat_with_grading("count_to_three")
-    chat_with_grading("respond_like_a_3_year_old", "Respond like a 3 year old")
+    chat_with_grading(
+        "respond_like_a_3_year_old", basic_chat, "Respond like a giggly 3 year old"
+    )
 
     ###
     # Chapter 2: Being Clear and Direct

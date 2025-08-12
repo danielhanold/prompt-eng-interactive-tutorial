@@ -1,0 +1,74 @@
+from api_client import get_completion
+import re
+
+# Define a map of variants and human-readable prompts:
+grade_variants_human_readable = {
+    "count_to_three": "Make me count to three",
+    "respond_like_a_3_year_old": "Respond like a 3-year old",
+    "more_than_800_words": "Response has to be longer than 800 words",
+}
+
+
+def grade_exercise(text: str, variant: str):
+    match variant:
+        case "count_to_three":
+            pattern = re.compile(r"^(?=.*1)(?=.*2)(?=.*3).*$", re.DOTALL)
+            return bool(pattern.match(text))
+        case "respond_like_a_3_year_old":
+            return bool(
+                re.search(r"giggles", text)
+                or re.search(r"soo", text)
+                or re.search(r"Wheee", text)
+            )
+        case "more_than_800_words":
+            trimmed = text.strip()
+            words = len(trimmed.split())
+            return words >= 800
+
+
+def chat_with_grading(variant, cb_func, system_prompt=""):
+    """Execute a chat interaction with automatic grading of the AI response.
+
+    This function orchestrates a complete chat workflow that includes user input,
+    AI response generation, response display, and automated grading based on
+    predefined criteria for different exercise variants.
+
+    Args:
+        variant (str): The exercise variant identifier that determines both the
+            user prompt and grading criteria. Must be a key in
+            grade_variants_human_readable. Available variants:
+            - "count_to_three": Expects response containing numbers 1, 2, and 3
+            - "respond_like_a_3_year_old": Expects childlike expressions
+              (giggles, soo, Wheee)
+            - "more_than_800_words": Expects response with 800+ words
+        cb_func (callable): Callback function that handles the actual chat
+            interaction. Should accept (variant, system_prompt, default_query)
+            and return the AI's response as a string.
+        system_prompt (str, optional): System-level instructions for the AI
+            model. Defaults to empty string.
+
+    Returns:
+        None: This function handles all output directly via print statements.
+
+    Side Effects:
+        - Prints the AI response to stdout
+        - Prints grading results showing whether the exercise was solved correctly
+        - May prompt user for input (depending on cb_func implementation)
+
+    Example:
+        >>> chat_with_grading("count_to_three", single_chat, "You are helpful")
+        Enter your query (variant: Make me count to three): Count for me
+        Here are the numbers: 1, 2, 3
+
+        --------------------------- GRADING ---------------------------
+        This exercise has been correctly solved: True
+    """
+    input_prompt = (
+        f"\nEnter your query (variant: {grade_variants_human_readable[variant]}): "
+    )
+    response = cb_func(system_prompt, 2000, "", input_prompt)
+    print("\n--------------------------- GRADING ---------------------------")
+    print(
+        "This exercise has been correctly solved:",
+        grade_exercise(response, variant),
+    )

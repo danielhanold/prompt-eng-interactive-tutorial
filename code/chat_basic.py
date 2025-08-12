@@ -7,7 +7,7 @@ def _basic_chat(
     system_prompt: str,
     max_tokens: int,
     default_query: str,
-    glue_word="your",
+    input_prompt="Enter your query: ",
 ):
     """Private helper function to handle a single chat interaction.
 
@@ -22,23 +22,27 @@ def _basic_chat(
             ("your" for first interaction, "another" for subsequent).
             Defaults to "your".
     """
-    print("\n----------------------------------------------------------------")
-    user_prompt = (
-        input(f"\nEnter {glue_word} query [{default_query}]: ") or default_query
-    )
-    if not user_prompt:
-        user_prompt = default_query
-
+    print("\n----------------------------------------------------------------\n")
     print(
-        f"\nClaude's response\nMax tokens: {max_tokens}\nSystem prompt: {system_prompt or "None"}"
+        f"=== User turn === \nMax tokens: {max_tokens}\nSystem prompt: {system_prompt or "None"}"
     )
-    print(f"===> {get_completion(user_prompt, system_prompt, max_tokens)}")
+    user_input = ""
+    while not user_input:
+        user_input = input(input_prompt)
+        if not user_input:
+            user_input = default_query
+        if not user_input:
+            print("You have to enter something here.")
+    print(f"User input: {user_input}")
+
+    print("\n=== Assistant turn ===")
+    response = get_completion(user_input, system_prompt, max_tokens)
+    print(response)
+    return response
 
 
 def basic_chat(
-    system_prompt="",
-    max_tokens=2000,
-    default_query=DEFAULT_QUERY,
+    system_prompt="", max_tokens=2000, default_query=DEFAULT_QUERY, input_prompt=""
 ):
     """Execute a single chat interaction with the AI model.
 
@@ -58,13 +62,15 @@ def basic_chat(
         >>> basic_chat("You are a helpful assistant", 1000)
         >>> basic_chat()  # Uses default system prompt
     """
-    _basic_chat(system_prompt, max_tokens, default_query)
+    # Set a default message for the default prompt.
+    if not input_prompt:
+        input_prompt = f"Enter your query [{default_query}]: "
+    response = _basic_chat(system_prompt, max_tokens, default_query, input_prompt)
+    return response
 
 
 def basic_chat_loop(
-    system_prompt="",
-    max_tokens=2000,
-    default_query=DEFAULT_QUERY,
+    system_prompt="", max_tokens=2000, default_query=DEFAULT_QUERY, input_prompt=""
 ):
     """Start an interactive chat loop with the AI model.
 
@@ -90,5 +96,6 @@ def basic_chat_loop(
     is_first_run = True
     while True:
         glue_word = "your" if is_first_run else "another"
-        _basic_chat(system_prompt, max_tokens, default_query, glue_word)
+        input_prompt = f"Enter {glue_word} query [{default_query}]: "
+        _basic_chat(system_prompt, max_tokens, default_query, input_prompt)
         is_first_run = False
