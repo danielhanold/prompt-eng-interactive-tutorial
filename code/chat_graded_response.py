@@ -9,12 +9,10 @@ grade_variants_human_readable = {
 }
 
 
-def single_chat(variant: str, system_prompt=""):
+def single_chat(variant: str, system_prompt="", default_query=""):
     user_prompt = ""
     while not user_prompt:
-        user_prompt = input(
-            f"\nEnter your query [variant: {grade_variants_human_readable[variant]}]: "
-        )
+        user_prompt = input(default_query)
         if not user_prompt:
             print("User prompt cannot be empty. Enter something!")
 
@@ -27,7 +25,11 @@ def grade_exercise(text: str, variant: str):
             pattern = re.compile(r"^(?=.*1)(?=.*2)(?=.*3).*$", re.DOTALL)
             return bool(pattern.match(text))
         case "respond_like_a_3_year_old":
-            return bool(re.search(r"giggles", text) or re.search(r"soo", text))
+            return bool(
+                re.search(r"giggles", text)
+                or re.search(r"soo", text)
+                or re.search(r"Wheee", text)
+            )
         case "more_than_800_words":
             trimmed = text.strip()
             words = len(trimmed.split())
@@ -35,7 +37,10 @@ def grade_exercise(text: str, variant: str):
 
 
 def chat_with_grading(variant, system_prompt=""):
-    response = single_chat(variant, system_prompt)
+    default_query = (
+        f"\nEnter your query (variant: {grade_variants_human_readable[variant]}): "
+    )
+    response = single_chat(variant, system_prompt, default_query)
     print(response)
     print("\n--------------------------- GRADING ---------------------------")
     print(
