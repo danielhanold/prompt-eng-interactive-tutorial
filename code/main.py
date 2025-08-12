@@ -56,12 +56,13 @@ def main():
     # Chatper 4: Separating Data & Instructions
     ###
     # basic_chat_template("animal_sound")
-    basic_chat_template(
-        "polite_email",
-        "",
-        2000,
-        "Show up at 6am tomorrow because I'm the CEO and I say so.",
-    )
+    # basic_chat_template(
+    #     "polite_email",
+    #     "",
+    #     2000,
+    #     "Show up at 6am tomorrow because I'm the CEO and I say so.",
+    # )
+    basic_chat_template("identify_second_item")
 
 
 if __name__ == "__main__":

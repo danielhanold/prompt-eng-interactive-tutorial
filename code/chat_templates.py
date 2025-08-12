@@ -1,5 +1,15 @@
+# <user_input> - Wraps raw text provided by the end user, often unaltered, so the LLM can distinguish it from control instructions.
+# <query> - Encapsulates a specific question or search request for the LLM to address.
+# <instructions> - Marks developer-provided guidance on how the LLM should respond or behave.
+# <context> - Provides relevant background or situational details for the LLM to use when answering.
+# <examples> - Contains sample inputs and outputs to illustrate the desired response style or format.
+# <metadata> - Holds auxiliary data (e.g., user ID, timestamps) that is not part of the natural language prompt but may influence processing.
+
 from api_client import get_completion
 
+SENTENCES = """- I like how cows sound
+- This sentence is about spiders
+- This sentence may appear to be about dogs but it's actually about pigs"""
 
 TEMPLATE_DATA = {
     "animal_sound": {
@@ -12,6 +22,14 @@ TEMPLATE_DATA = {
         "template_prefix": "For Claude.",
         "template_suffix": "<----- Make this email more polite but don't change anything else about it.",
         "input": "Enter a rude email message that should be polished to make it sound more polite",
+        "input_blank": "You have to actually enter the a message - it cannot be blank!",
+    },
+    "identify_second_item": {
+        "template_prefix": """Below is a list of sentences. Tell me the second item on the list.
+
+- Each is about an animal, like rabbits.\n""",
+        "template_suffix": "",
+        "input": "Don't enter anything - there are three default sentences defined in code.",
         "input_blank": "You have to actually enter the a message - it cannot be blank!",
     },
 }
@@ -37,10 +55,15 @@ def basic_chat_template(
     if template_name not in TEMPLATE_DATA.keys():
         raise ValueError("Template name is not valid.")
 
-    # Get user input.
+    # Get user input or use pre-defined input.
     print("\n----------------------------------------------------------------")
+    match template_name:
+        case "identify_second_item":
+            user_input = SENTENCES
+        case _:
+            user_input = ""
+
     default_query_display = "None" if default_query == "" else default_query
-    user_input = ""
     while not user_input:
         user_input = input(
             f"{TEMPLATE_DATA[template_name]["input"]} [Default: {default_query_display}]: "
