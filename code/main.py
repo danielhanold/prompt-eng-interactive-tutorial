@@ -1,11 +1,35 @@
 from api_client import validate_environment_variables
 from chat_basic import basic_chat, basic_chat_loop
-from chat_grading import chat_with_grading, single_chat
+from chat_grading import chat_with_grading
 from chat_templates import basic_chat_template
 from constants import SYSTEM_PROMPT_DEFAULT
 
 
 def main():
+    """Main entry point for the Anthropic prompt engineering tutorial.
+
+    Demonstrates various prompt engineering techniques through interactive
+    chat examples. Contains code for multiple tutorial chapters covering
+    basic prompts, role prompting, data separation, and more. Most examples
+    are commented out by default.
+
+    Current active example: Chat with grading using "respond_like_a_3_year_old"
+    variant to demonstrate childlike response patterns.
+
+    Tutorial Chapters Covered:
+    - Chapter 1: Basic Prompt Structure
+    - Chapter 2: Being Clear and Direct
+    - Chapter 3: Role Prompting
+    - Chapter 4: Separating Data & Instructions
+
+    Side Effects:
+        - Validates environment variables (API key, model name)
+        - Prints tutorial progress messages
+        - May prompt user for input and display AI responses
+
+    Raises:
+        ValueError: If required environment variables are not set.
+    """
     print("Basic testing with Anthropic API")
     validate_environment_variables()
 

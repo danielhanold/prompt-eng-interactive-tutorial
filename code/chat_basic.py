@@ -12,15 +12,22 @@ def _basic_chat(
     """Private helper function to handle a single chat interaction.
 
     Prompts the user for input, uses the default query if no input is provided,
-    and displays the AI response with token count information.
+    displays the interaction details, and returns the AI response.
 
     Args:
         system_prompt (str): The system prompt to use for the AI model.
         max_tokens (int): Maximum number of tokens in the AI response.
         default_query (str): Default query to use if user provides no input.
-        glue_word (str, optional): Word to use in the input prompt
-            ("your" for first interaction, "another" for subsequent).
-            Defaults to "your".
+        input_prompt (str, optional): Custom prompt text to display to user.
+            Defaults to "Enter your query: ".
+
+    Returns:
+        str: The AI model's response text.
+
+    Side Effects:
+        - Prints session details (max tokens, system prompt) to stdout
+        - Prompts user for input via stdin
+        - Prints user input and AI response to stdout
     """
     print("\n----------------------------------------------------------------\n")
     print(
@@ -57,10 +64,15 @@ def basic_chat(
             Defaults to 2000.
         default_query (str, optional): Default query to use if user provides
             no input. Defaults to DEFAULT_QUERY.
+        input_prompt (str, optional): Custom prompt text to display to user.
+            If empty, auto-generates prompt with default_query. Defaults to "".
+
+    Returns:
+        str: The AI model's response text.
 
     Example:
-        >>> basic_chat("You are a helpful assistant", 1000)
-        >>> basic_chat()  # Uses default system prompt
+        >>> response = basic_chat("You are a helpful assistant", 1000)
+        >>> basic_chat()  # Uses all defaults
     """
     # Set a default message for the default prompt.
     if not input_prompt:
@@ -76,7 +88,8 @@ def basic_chat_loop(
 
     Continuously prompts the user for queries and displays AI responses until
     the program is terminated. The first prompt uses "your" and subsequent
-    prompts use "another" for better user experience.
+    prompts use "another" for better user experience. Ignores the input_prompt
+    parameter and auto-generates appropriate prompts.
 
     Args:
         system_prompt (str, optional): System prompt for the AI model.
@@ -85,6 +98,11 @@ def basic_chat_loop(
             Defaults to 2000.
         default_query (str, optional): Default query to use if user provides
             no input. Defaults to DEFAULT_QUERY.
+        input_prompt (str, optional): Ignored in this function. Auto-generates
+            appropriate prompts. Defaults to "".
+
+    Returns:
+        None: This function runs indefinitely and doesn't return.
 
     Note:
         This function runs indefinitely until interrupted (Ctrl+C).

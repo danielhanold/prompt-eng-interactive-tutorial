@@ -38,18 +38,39 @@ TEMPLATE_DATA = {
 def basic_chat_template(
     template_name: str, system_prompt="", max_tokens=2000, default_query=""
 ):
-    """Private helper function to handle a single chat interaction.
+    """Execute a templated chat interaction using predefined prompt templates.
 
-    Prompts the user for input, uses the default query if no input is provided,
-    and displays the AI response with token count information.
+    Uses structured prompt templates from TEMPLATE_DATA to format user input
+    with XML tags and generate AI responses. Some templates have predefined
+    input (like "identify_second_item"), while others prompt the user for input.
 
     Args:
-        system_prompt (str): The system prompt to use for the AI model.
-        max_tokens (int): Maximum number of tokens in the AI response.
-        default_query (str): Default query to use if user provides no input.
-        glue_word (str, optional): Word to use in the input prompt
-            ("your" for first interaction, "another" for subsequent).
-            Defaults to "your".
+        template_name (str): Name of the template to use. Must be a key in
+            TEMPLATE_DATA. Available templates:
+            - "animal_sound": Prompts for animal name, asks for the sound it makes
+            - "polite_email": Prompts for rude email, asks to make it polite
+            - "identify_second_item": Uses predefined sentences, asks for second item
+        system_prompt (str, optional): System prompt for the AI model.
+            Defaults to "".
+        max_tokens (int, optional): Maximum number of tokens in the AI response.
+            Defaults to 2000.
+        default_query (str, optional): Default query to use if user provides
+            no input (only for templates that prompt for user input). Defaults to "".
+
+    Returns:
+        None: This function handles all output directly via print statements.
+
+    Raises:
+        ValueError: If template_name is not found in TEMPLATE_DATA.
+
+    Side Effects:
+        - Prints template instructions and prompts to stdout
+        - May prompt user for input via stdin (depending on template)
+        - Prints formatted user prompt, system prompt, and AI response to stdout
+
+    Example:
+        >>> basic_chat_template("animal_sound")
+        >>> basic_chat_template("polite_email", "Be very polite", 1000, "I'm busy!")
     """
     # Validate template_name.
     if template_name not in TEMPLATE_DATA.keys():

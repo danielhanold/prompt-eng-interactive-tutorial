@@ -15,6 +15,18 @@ client = anthropic.Anthropic(api_key=API_KEY)
 
 
 def validate_environment_variables():
+    """Validate that required environment variables are set.
+
+    Checks for the presence of ANTHROPIC_API_KEY and ANTHROPIC_MODEL_NAME
+    environment variables required for API communication.
+
+    Raises:
+        ValueError: If ANTHROPIC_API_KEY is not set.
+        ValueError: If ANTHROPIC_MODEL_NAME is not set.
+
+    Example:
+        >>> validate_environment_variables()  # Raises if vars missing
+    """
     if not environ.get("ANTHROPIC_API_KEY"):
         raise ValueError("API_KEY is not set")
     if not environ.get("ANTHROPIC_MODEL_NAME"):
@@ -22,6 +34,22 @@ def validate_environment_variables():
 
 
 def _get_completion(prompt: str, system_prompt: str, max_tokens: int):
+    """Private function to make direct API calls to Anthropic's Claude.
+
+    Makes a single API request with fixed temperature of 0.0 for deterministic
+    responses. This function is used internally by get_completion().
+
+    Args:
+        prompt (str): The user message to send to the model.
+        system_prompt (str): System-level instructions for the model.
+        max_tokens (int): Maximum number of tokens to generate.
+
+    Returns:
+        str: The model's response text.
+
+    Note:
+        This is a private function. Use get_completion() instead for the public API.
+    """
     message = client.messages.create(
         model=MODEL_NAME,
         max_tokens=max_tokens,
@@ -29,7 +57,10 @@ def _get_completion(prompt: str, system_prompt: str, max_tokens: int):
         system=system_prompt,
         messages=[{"role": "user", "content": prompt}],
     )
-    return message.content[0].text
+    # Extract text from the first content block
+    content_block = message.content[0]
+    # Type-safe access to text attribute
+    return getattr(content_block, "text", str(content_block))
 
 
 def get_completion(prompt: str, system_prompt="", max_tokens=2000):
