@@ -1,6 +1,20 @@
-"""
-Shared API client module.
-This contains the core API functionality that other modules can use.
+"""Shared API client module for Anthropic Claude integration.
+
+This module provides the core API functionality for communicating with
+Anthropic's Claude AI model. It handles environment variable validation,
+API client initialization, and completion requests with proper error handling.
+
+The module exposes both a private helper function for direct API calls and
+a public interface that automatically handles default system prompts.
+
+Functions:
+    validate_environment_variables: Validates required environment variables
+    get_completion: Public interface for getting AI completions
+    _get_completion: Private helper for direct API calls
+
+Environment Variables Required:
+    ANTHROPIC_API_KEY: API key for Anthropic's service
+    ANTHROPIC_MODEL_NAME: Name of the Claude model to use
 """
 
 from constants import SYSTEM_PROMPT_DEFAULT
@@ -47,6 +61,10 @@ def _get_completion(prompt: str, system_prompt: str, max_tokens: int):
     Returns:
         str: The model's response text.
 
+    Raises:
+        anthropic.APIError: If the API request fails.
+        anthropic.RateLimitError: If rate limits are exceeded.
+
     Note:
         This is a private function. Use get_completion() instead for the public API.
     """
@@ -66,6 +84,10 @@ def _get_completion(prompt: str, system_prompt: str, max_tokens: int):
 def get_completion(prompt: str, system_prompt="", max_tokens=2000):
     """Get completion from Anthropic API with optional system prompt.
 
+    Public interface for generating AI completions. Automatically uses the
+    default system prompt if none is provided, ensuring consistent behavior
+    across the application.
+
     Args:
         prompt (str): The user prompt to send to the model.
         system_prompt (str, optional): System prompt to use. If empty string,
@@ -74,6 +96,10 @@ def get_completion(prompt: str, system_prompt="", max_tokens=2000):
 
     Returns:
         str: The model's response text.
+
+    Example:
+        >>> response = get_completion("What is the capital of France?")
+        >>> response = get_completion("Tell me a joke", "You are a comedian", 500)
     """
     if not system_prompt:  # More Pythonic - handles "", None, etc.
         return _get_completion(
