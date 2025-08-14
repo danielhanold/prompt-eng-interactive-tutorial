@@ -115,7 +115,7 @@ def chat_with_grading(variant, cb_func, system_prompt="", input_prompt=""):
     """
     if not input_prompt:
         input_prompt = (
-            f"\nEnter your query (variant: {grade_variants_human_readable[variant]}): "
+            f"Enter your query (to grade: {grade_variants_human_readable[variant]}): "
         )
     response = cb_func(system_prompt, 2000, "", input_prompt)
     print("\n--------------------------- GRADING ---------------------------")

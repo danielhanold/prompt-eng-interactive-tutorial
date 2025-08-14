@@ -1,5 +1,5 @@
 from api_client import get_completion
-from chat_templates import TEMPLATE_DATA as template_data
+from chat_templates import get_chat_template_data
 
 # from chat_templates import
 
@@ -10,7 +10,7 @@ def _basic_chat(
     system_prompt: str,
     max_tokens: int,
     default_user_input="",
-    user_input_query="Enter your query: ",
+    user_input_hint="Enter your query: ",
     user_prompt_prefix="",
     user_promt_suffix="",
 ):
@@ -23,7 +23,7 @@ def _basic_chat(
         system_prompt (str): The system prompt to use for the AI model.
         max_tokens (int): Maximum number of tokens in the AI response.
         default_query (str): Default query to use if user provides no input.
-        user_input_query (str, optional): Custom prompt text to display to user.
+        user_input_hint (str, optional): Custom prompt text to display to user.
             Defaults to "Enter your query: ".
 
     Returns:
@@ -36,7 +36,7 @@ def _basic_chat(
     """
     print("\n----------------------------------------------------------------\n")
     print(
-        f"=== User turn === \nMax tokens: {max_tokens}\nSystem prompt: {system_prompt or "None"}"
+        f"=== User turn === \nMax tokens: {max_tokens}\nSystem prompt: {system_prompt or "None"}\nPrompt prefix: {user_prompt_prefix}\nPrompt suffix: {user_promt_suffix}\n"
     )
 
     # Allow downstream functions to provide default user input, which will skip gathering user input.
@@ -44,7 +44,7 @@ def _basic_chat(
 
     # Gather user input, if necessary.
     while not user_input:
-        user_input = input(user_input_query)
+        user_input = input(user_input_hint)
         if not user_input:
             user_input = default_user_input
         if not user_input:
@@ -71,7 +71,7 @@ def basic_chat(
     system_prompt="",
     max_tokens=2000,
     default_user_input=DEFAULT_USER_INPUT,
-    user_input_query="",
+    user_input_hint="",
 ):
     """Execute a single chat interaction with the AI model.
 
@@ -86,7 +86,7 @@ def basic_chat(
             Defaults to 2000.
         default_query (str, optional): Default query to use if user provides
             no input. Defaults to DEFAULT_USER_INPUT.
-        user_input_query (str, optional): Custom prompt text to display to user.
+        user_input_hint (str, optional): Custom prompt text to display to user.
             If empty, auto-generates prompt with default_query. Defaults to "".
 
     Returns:
@@ -97,13 +97,13 @@ def basic_chat(
         >>> basic_chat()  # Uses all defaults
     """
     # Set a default message for the default prompt.
-    if not user_input_query:
-        user_input_query = (
+    if not user_input_hint:
+        user_input_hint = (
             f"Default user input: {default_user_input or "None"}\nEnter your query: "
         )
 
     # Get response from LLM.
-    return _basic_chat(system_prompt, max_tokens, default_user_input, user_input_query)
+    return _basic_chat(system_prompt, max_tokens, default_user_input, user_input_hint)
 
 
 def basic_chat_template(
@@ -143,62 +143,32 @@ def basic_chat_template(
         >>> basic_chat_template("animal_sound")
         >>> basic_chat_template("polite_email", "Be very polite", 1000, "I'm busy!")
     """
-    # Validate template_name.
-    if template_name not in TEMPLATE_DATA.keys():
-        raise ValueError("Template name is not valid.")
 
-    # Get user input or use pre-defined input.
-    print("\n----------------------------------------------------------------")
-    match template_name:
-        case "identify_second_item":
-            user_input = SENTENCES
-        case _:
-            user_input = ""
+    # Get template data.
+    template_data = get_chat_template_data(template_name)
 
-    default_query_display = "None" if default_query == "" else default_query
-    while not user_input:
-        user_input = input(
-            f"{TEMPLATE_DATA[template_name]["input"]} [Default: {default_query_display}]: "
-        )
-
-        # If a non-empty default query was provided, use it.
-        if not user_input:
-            user_input = default_query
-
-        # If we're still left with no input, ask the user to provide one.
-        if not user_input:
-            print(TEMPLATE_DATA[template_name]["input_blank"])
-
-    # Generate prompt based on template and user_input.
-    user_prompt = " ".join(
-        [
-            TEMPLATE_DATA[template_name]["template_prefix"],
-            f"<user_input>{user_input}</user_input>",
-            TEMPLATE_DATA[template_name]["template_suffix"],
-        ]
+    # Get response from LLM.
+    return _basic_chat(
+        system_prompt,
+        max_tokens,
+        template_data["default_user_input"],
+        template_data["user_input_hint"],
+        template_data["template_prefix"],
+        template_data["template_suffix"],
     )
-
-    # Print response.
-    print(f"\nClaude's response\nMax tokens: {max_tokens}")
-    print(f"User prompt: {user_prompt}")
-    print(f"System prompt: {system_prompt or "None"}")
-
-    response = get_completion(user_prompt, system_prompt, max_tokens)
-    print(f"===> {response}")
-    return response
 
 
 def basic_chat_loop(
     system_prompt="",
     max_tokens=2000,
     default_user_input=DEFAULT_USER_INPUT,
-    user_input_query="",
+    user_input_hint="",
 ):
     """Start an interactive chat loop with the AI model.
 
     Continuously prompts the user for queries and displays AI responses until
     the program is terminated. The first prompt uses "your" and subsequent
-    prompts use "another" for better user experience. Ignores the user_input_query
+    prompts use "another" for better user experience. Ignores the user_input_hint
     parameter and auto-generates appropriate prompts.
 
     Args:
@@ -208,7 +178,7 @@ def basic_chat_loop(
             Defaults to 2000.
         default_query (str, optional): Default query to use if user provides
             no input. Defaults to DEFAULT_USER_INPUT.
-        user_input_query (str, optional): Ignored in this function. Auto-generates
+        user_input_hint (str, optional): Ignored in this function. Auto-generates
             appropriate prompts. Defaults to "".
 
     Returns:
@@ -224,6 +194,6 @@ def basic_chat_loop(
     is_first_run = True
     while True:
         glue_word = "your" if is_first_run else "another"
-        user_input_query = f"Enter {glue_word} query [{default_user_input}]: "
-        _basic_chat(system_prompt, max_tokens, default_user_input, user_input_query)
+        user_input_hint = f"Enter {glue_word} query [{default_user_input}]: "
+        _basic_chat(system_prompt, max_tokens, default_user_input, user_input_hint)
         is_first_run = False
