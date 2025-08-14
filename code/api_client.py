@@ -32,7 +32,8 @@ def validate_environment_variables():
     """Validate that required environment variables are set.
 
     Checks for the presence of ANTHROPIC_API_KEY and ANTHROPIC_MODEL_NAME
-    environment variables required for API communication.
+    environment variables required for API communication. Must be called
+    before using any other functions in this module.
 
     Raises:
         ValueError: If ANTHROPIC_API_KEY is not set.
@@ -40,11 +41,12 @@ def validate_environment_variables():
 
     Example:
         >>> validate_environment_variables()  # Raises if vars missing
+        >>> # Safe to use other functions after this call succeeds
     """
     if not environ.get("ANTHROPIC_API_KEY"):
-        raise ValueError("API_KEY is not set")
+        raise ValueError("ANTHROPIC_API_KEY is not set")
     if not environ.get("ANTHROPIC_MODEL_NAME"):
-        raise ValueError("OPENAI_MODEL is not set")
+        raise ValueError("ANTHROPIC_MODEL_NAME is not set")
 
 
 def _get_completion(prompt: str, system_prompt: str, max_tokens: int):
@@ -86,16 +88,20 @@ def get_completion(prompt: str, system_prompt="", max_tokens=2000):
 
     Public interface for generating AI completions. Automatically uses the
     default system prompt if none is provided, ensuring consistent behavior
-    across the application.
+    across the application. This is the main entry point for all API interactions.
 
     Args:
         prompt (str): The user prompt to send to the model.
         system_prompt (str, optional): System prompt to use. If empty string,
-            uses the default system prompt. Defaults to "".
+            uses the default system prompt from constants. Defaults to "".
         max_tokens (int, optional): Maximum tokens in the response. Defaults to 2000.
 
     Returns:
         str: The model's response text.
+
+    Raises:
+        anthropic.APIError: If the API request fails.
+        anthropic.RateLimitError: If rate limits are exceeded.
 
     Example:
         >>> response = get_completion("What is the capital of France?")

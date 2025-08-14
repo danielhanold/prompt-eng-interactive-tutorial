@@ -33,8 +33,8 @@ def main():
     basic prompts, role prompting, data separation, and more. Most examples
     are commented out by default to allow focused experimentation.
 
-    Current active example: basic_chat() - demonstrates basic chat functionality
-    with default settings.
+    Current active example: chat_with_grading() - demonstrates graded exercise
+    functionality with "respond_like_a_3_year_old" variant.
 
     Tutorial Chapters Available:
     - Chapter 1: Basic Prompt Structure (basic_chat functions)
@@ -43,19 +43,25 @@ def main():
     - Chapter 4: Separating Data & Instructions (template examples)
 
     To run different examples, uncomment the relevant sections in the function.
+    Environment variables ANTHROPIC_API_KEY and ANTHROPIC_MODEL_NAME must be set.
 
     Side Effects:
         - Validates environment variables (API key, model name)
-        - Prints tutorial progress messages
-        - May prompt user for input and display AI responses
-        - Executes currently active tutorial example
+        - Prints tutorial progress messages to stdout
+        - May prompt user for input via stdin and display AI responses
+        - Executes currently active tutorial example with grading feedback
 
     Raises:
-        ValueError: If required environment variables are not set.
+        ValueError: If required environment variables (ANTHROPIC_API_KEY or
+            ANTHROPIC_MODEL_NAME) are not set.
 
     Example:
         To run this tutorial:
         >>> python main.py
+
+        Or from within Python:
+        >>> from main import main
+        >>> main()
     """
     print("Basic testing with Anthropic API")
     validate_environment_variables()

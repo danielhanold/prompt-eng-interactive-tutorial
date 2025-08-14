@@ -1,3 +1,22 @@
+"""Basic chat functionality for Anthropic prompt engineering tutorial.
+
+This module provides core chat interaction functions that demonstrate various
+prompt engineering techniques. It includes single-shot chat, continuous chat
+loops, and templated chat interactions for structured prompt examples.
+
+The module serves as the primary interface for user interactions with the AI
+model, handling user input, prompt formatting, and response display.
+
+Functions:
+    basic_chat: Execute a single chat interaction with optional configuration
+    basic_chat_loop: Start continuous chat session with the AI model
+    basic_chat_template: Execute templated chat using predefined prompt structures
+    _basic_chat: Private helper for handling individual chat interactions
+
+Constants:
+    DEFAULT_USER_INPUT: Default question used when user provides no input
+"""
+
 from api_client import get_completion
 from chat_templates import get_chat_template_data
 
@@ -17,22 +36,33 @@ def _basic_chat(
     """Private helper function to handle a single chat interaction.
 
     Prompts the user for input, uses the default query if no input is provided,
-    displays the interaction details, and returns the AI response.
+    displays the interaction details, and returns the AI response. This function
+    constructs a formatted prompt with optional prefix and suffix elements.
 
     Args:
         system_prompt (str): The system prompt to use for the AI model.
         max_tokens (int): Maximum number of tokens in the AI response.
-        default_query (str): Default query to use if user provides no input.
+        default_user_input (str, optional): Default user input to use if user
+            provides no input. Defaults to "".
         user_input_hint (str, optional): Custom prompt text to display to user.
             Defaults to "Enter your query: ".
+        user_prompt_prefix (str, optional): Text to prepend to the user prompt.
+            Defaults to "".
+        user_promt_suffix (str, optional): Text to append to the user prompt.
+            Defaults to "".
 
     Returns:
         str: The AI model's response text.
 
     Side Effects:
-        - Prints session details (max tokens, system prompt) to stdout
-        - Prompts user for input via stdin
-        - Prints user input and AI response to stdout
+        - Prints session details (max tokens, system prompt, prefix/suffix) to stdout
+        - Prompts user for input via stdin repeatedly until valid input received
+        - Prints user input and formatted user prompt to stdout
+        - Prints AI response to stdout
+
+    Note:
+        This is a private function used internally by other chat functions.
+        The user prompt is formatted as: prefix + <user_input>input</user_input> + suffix
     """
     print("\n----------------------------------------------------------------\n")
     print(
@@ -84,13 +114,17 @@ def basic_chat(
             If empty string, uses the default system prompt. Defaults to "".
         max_tokens (int, optional): Maximum number of tokens in the response.
             Defaults to 2000.
-        default_query (str, optional): Default query to use if user provides
+        default_user_input (str, optional): Default user input to use if user provides
             no input. Defaults to DEFAULT_USER_INPUT.
         user_input_hint (str, optional): Custom prompt text to display to user.
-            If empty, auto-generates prompt with default_query. Defaults to "".
+            If empty, auto-generates prompt with default_user_input. Defaults to "".
 
     Returns:
         str: The AI model's response text.
+
+    Side Effects:
+        - Prompts user for input via stdin
+        - Prints session details, user input, and AI response to stdout
 
     Example:
         >>> response = basic_chat("You are a helpful assistant", 1000)
@@ -127,12 +161,15 @@ def basic_chat_template(
             Defaults to 2000.
         default_query (str, optional): Default query to use if user provides
             no input (only for templates that prompt for user input). Defaults to "".
+            Note: This parameter is passed but not directly used; template-specific
+            defaults are retrieved from the template configuration.
 
     Returns:
-        None: This function handles all output directly via print statements.
+        str: The AI model's response text.
 
     Raises:
-        ValueError: If template_name is not found in TEMPLATE_DATA.
+        ValueError: If template_name is not found in TEMPLATE_DATA (raised by
+            get_chat_template_data).
 
     Side Effects:
         - Prints template instructions and prompts to stdout
@@ -140,8 +177,8 @@ def basic_chat_template(
         - Prints formatted user prompt, system prompt, and AI response to stdout
 
     Example:
-        >>> basic_chat_template("animal_sound")
-        >>> basic_chat_template("polite_email", "Be very polite", 1000, "I'm busy!")
+        >>> response = basic_chat_template("animal_sound")
+        >>> response = basic_chat_template("polite_email", "Be very polite", 1000, "I'm busy!")
     """
 
     # Get template data.
@@ -176,7 +213,7 @@ def basic_chat_loop(
             If empty string, uses the default system prompt. Defaults to "".
         max_tokens (int, optional): Maximum number of tokens in each response.
             Defaults to 2000.
-        default_query (str, optional): Default query to use if user provides
+        default_user_input (str, optional): Default user input to use if user provides
             no input. Defaults to DEFAULT_USER_INPUT.
         user_input_hint (str, optional): Ignored in this function. Auto-generates
             appropriate prompts. Defaults to "".
@@ -184,8 +221,14 @@ def basic_chat_loop(
     Returns:
         None: This function runs indefinitely and doesn't return.
 
+    Side Effects:
+        - Repeatedly prompts user for input via stdin
+        - Prints session details, user input, and AI responses to stdout
+        - Runs until program termination (Ctrl+C or similar)
+
     Note:
         This function runs indefinitely until interrupted (Ctrl+C).
+        Each iteration displays the current session configuration and AI response.
 
     Example:
         >>> basic_chat_loop("You are a comedian", 500)

@@ -32,25 +32,28 @@ def grade_exercise(text: str, variant: str):
 
     Evaluates the given text against specific criteria depending on the exercise
     variant to determine if the exercise was completed successfully. This function
-    implements automatic assessment of prompt engineering techniques.
+    implements automatic assessment of prompt engineering techniques using regular
+    expressions and text analysis.
 
     Args:
         text (str): The AI response text to evaluate.
         variant (str): The exercise variant identifier. Must be one of:
-            - "count_to_three": Checks if text contains numbers 1, 2, and 3
+            - "count_to_three": Checks if text contains numbers 1, 2, and 3 anywhere
             - "respond_like_a_3_year_old": Checks for childlike expressions
-              (giggles, soo, Wheee)
-            - "more_than_800_words": Checks if text has 800 or more words
+              (giggles, soo, Wheee) - case sensitive
+            - "more_than_800_words": Checks if text has 800 or more words after trimming
 
     Returns:
         bool: True if the exercise criteria are met, False otherwise.
-        Returns None for unknown variants.
+        None: If variant is not recognized or invalid.
 
     Example:
         >>> grade_exercise("1, 2, 3 let's go!", "count_to_three")
         True
         >>> grade_exercise("This is short", "more_than_800_words")
         False
+        >>> grade_exercise("I love to giggle!", "respond_like_a_3_year_old")
+        True
         >>> grade_exercise("Unknown variant", "invalid")
         None
     """
@@ -90,7 +93,7 @@ def chat_with_grading(variant, cb_func, system_prompt="", input_prompt=""):
             - "more_than_800_words": Expects response with 800+ words
         cb_func (callable): Callback function that handles the actual chat
             interaction. Should accept (system_prompt, max_tokens, default_user_input, input_prompt)
-            and return the AI's response as a string.
+            and return the AI's response as a string. Typically basic_chat or similar.
         system_prompt (str, optional): System-level instructions for the AI
             model. Defaults to empty string.
         input_prompt (str, optional): Custom prompt text to display to user.
@@ -100,14 +103,18 @@ def chat_with_grading(variant, cb_func, system_prompt="", input_prompt=""):
         None: This function handles all output directly via print statements.
 
     Side Effects:
-        - Prints the AI response to stdout
+        - Calls cb_func which may prompt user for input via stdin
+        - Prints the AI response to stdout (via cb_func)
         - Prints grading results showing whether the exercise was solved correctly
-        - May prompt user for input (depending on cb_func implementation)
+        - Uses fixed max_tokens value of 2000 for all interactions
+
+    Raises:
+        KeyError: If variant is not found in grade_variants_human_readable.
 
     Example:
         >>> from chat_basic import basic_chat
         >>> chat_with_grading("count_to_three", basic_chat, "You are helpful")
-        Enter your query (variant: Make me count to three): Count for me
+        Enter your query (to grade: Make me count to three): Count for me
         Here are the numbers: 1, 2, 3
 
         --------------------------- GRADING ---------------------------

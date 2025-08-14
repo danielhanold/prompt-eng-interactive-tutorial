@@ -55,11 +55,16 @@ def get_chat_template_data(template_name: str) -> dict:
 
     This function validates the template name and returns the complete
     configuration including template prefix/suffix, user input query,
-    and any default user input for the specified template.
+    and any default user input for the specified template. The function
+    automatically handles template-specific default inputs based on the
+    template type.
 
     Args:
         template_name (str): Name of the template to retrieve. Must be a key
-            in TEMPLATE_DATA.
+            in TEMPLATE_DATA. Available templates include:
+            - "animal_sound": Ask for animal sounds
+            - "polite_email": Convert rude emails to polite ones
+            - "identify_second_item": Identify second item in predefined list
 
     Returns:
         dict: Template configuration containing:
@@ -75,7 +80,7 @@ def get_chat_template_data(template_name: str) -> dict:
         >>> config = get_chat_template_data("animal_sound")
         >>> print(config["user_input_hint"])
         Chatbot will tell you the noise an animal makes
-        Enter the name of an animal
+        Enter the name of an animal:
     """
     # Validate template_name.
     if template_name not in TEMPLATE_DATA.keys():
