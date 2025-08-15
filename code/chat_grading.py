@@ -25,6 +25,7 @@ grade_variants_human_readable = {
     "respond_like_a_3_year_old": "Respond like a 3-year old",
     "more_than_800_words": "Response has to be longer than 800 words",
     "haiku_topic": "Should return a Haiku based on topic",
+    "misspelling": 'Response should include the word "brown"',
 }
 
 
@@ -74,6 +75,8 @@ def grade_exercise(text: str, variant: str):
             return words >= 800
         case "haiku_topic":
             return bool(re.search("haiku", text.lower()))
+        case "misspelling":
+            return bool(re.search("brown", text.lower()))
         case _:
             return None  # Unknown variant
 

@@ -123,7 +123,8 @@ def main():
     #     "Show up at 6am tomorrow because I'm the CEO and I say so.",
     # )
     # basic_chat_template("identify_second_item")
-    chat_with_grading("haiku_topic", basic_chat_template)
+    # chat_with_grading("haiku_topic", basic_chat_template)
+    chat_with_grading("misspelling", basic_chat_template)
 
 
 if __name__ == "__main__":

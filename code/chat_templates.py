@@ -52,6 +52,11 @@ TEMPLATE_DATA = {
         "template_suffix": "Start the response with a header: Your Haiku:",
         "user_input_hint": "Enter a topic and I will create a Haiku: ",
     },
+    "misspelling": {
+        "template_prefix": "Hia its me i have a q about dogs jkaerjv",
+        "template_suffix": "jklmvca tx it help me muhch much atx fst fst answer short short tx",
+        "user_input_hint": "Don't enter anything - default is provided as: ar cn brown?",
+    },
 }
 
 
@@ -96,6 +101,8 @@ def get_chat_template_data(template_name: str) -> dict:
     match template_name:
         case "identify_second_item":
             default_user_input = SENTENCES
+        case "misspelling":
+            default_user_input = "ar cn brown?"
         case _:
             default_user_input = ""
 
