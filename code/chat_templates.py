@@ -47,6 +47,11 @@ TEMPLATE_DATA = {
         "template_suffix": "",
         "user_input_hint": "Don't enter anything - there are three default sentences defined in code: ",
     },
+    "haiku_topic": {
+        "template_prefix": "Create a Haiku based on the following topic:",
+        "template_suffix": "Start the response with a header: Your Haiku:",
+        "user_input_hint": "Enter a topic and I will create a Haiku: ",
+    },
 }
 
 

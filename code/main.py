@@ -78,9 +78,9 @@ def main():
 
     # Chat with grading.
     # chat_with_grading("count_to_three")
-    chat_with_grading(
-        "respond_like_a_3_year_old", basic_chat, "Respond like a giggly 3 year old"
-    )
+    # chat_with_grading(
+    #     "respond_like_a_3_year_old", basic_chat, "Respond like a giggly 3 year old"
+    # )
 
     ###
     # Chapter 2: Being Clear and Direct
@@ -123,7 +123,7 @@ def main():
     #     "Show up at 6am tomorrow because I'm the CEO and I say so.",
     # )
     # basic_chat_template("identify_second_item")
-    # basic_chat_template()
+    chat_with_grading("haiku_topic", basic_chat_template)
 
 
 if __name__ == "__main__":

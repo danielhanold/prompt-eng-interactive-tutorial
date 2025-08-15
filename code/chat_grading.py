@@ -24,6 +24,7 @@ grade_variants_human_readable = {
     "count_to_three": "Make me count to three",
     "respond_like_a_3_year_old": "Respond like a 3-year old",
     "more_than_800_words": "Response has to be longer than 800 words",
+    "haiku_topic": "Should return a Haiku based on topic",
 }
 
 
@@ -71,6 +72,8 @@ def grade_exercise(text: str, variant: str):
             trimmed = text.strip()
             words = len(trimmed.split())
             return words >= 800
+        case "haiku_topic":
+            return bool(re.search("haiku", text.lower()))
         case _:
             return None  # Unknown variant
 
@@ -124,7 +127,13 @@ def chat_with_grading(variant, cb_func, system_prompt="", input_prompt=""):
         input_prompt = (
             f"Enter your query (to grade: {grade_variants_human_readable[variant]}): "
         )
-    response = cb_func(system_prompt, 2000, "", input_prompt)
+
+    match cb_func.__name__:
+        case "basic_chat_template":
+            response = cb_func(variant)
+        case _:
+            response = cb_func(system_prompt, 2000, "", input_prompt)
+
     print("\n--------------------------- GRADING ---------------------------")
     print(
         "This exercise has been correctly solved:",

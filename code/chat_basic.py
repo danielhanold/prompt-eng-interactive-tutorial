@@ -65,9 +65,15 @@ def _basic_chat(
         The user prompt is formatted as: prefix + <user_input>input</user_input> + suffix
     """
     print("\n----------------------------------------------------------------\n")
-    print(
-        f"=== User turn === \nMax tokens: {max_tokens}\nSystem prompt: {system_prompt or "None"}\nPrompt prefix: {user_prompt_prefix}\nPrompt suffix: {user_promt_suffix}\n"
-    )
+    debug_data = [
+        "=== User turn ===",
+        f"Max tokens:         {max_tokens}",
+        f"System prompt:      {system_prompt or "None"}",
+        f"Default User Input: {default_user_input}",
+        f"Prompt prefix:      {user_prompt_prefix}",
+        f"Prompt suffix:      {user_promt_suffix}",
+    ]
+    print("\n".join(debug_data), end="\n\n")
 
     # Allow downstream functions to provide default user input, which will skip gathering user input.
     user_input = ""
