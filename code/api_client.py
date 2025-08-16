@@ -50,7 +50,11 @@ def validate_environment_variables():
 
 
 def _get_completion(
-    prompt: str, system_prompt: str, max_tokens: int, assistant_prefill: str
+    prompt: str,
+    system_prompt: str,
+    max_tokens: int,
+    assistant_prefill: str,
+    include_assistant_prefill=True,
 ):
     """Private function to make direct API calls to Anthropic's Claude.
 
@@ -64,6 +68,7 @@ def _get_completion(
         assistant_prefill (str): assistant_prefill string for assistant response.
           Can be used to streer a response in a specific direction or suggest a specific output, e.g. JSON.
           The assistant prefill will be excluded from the actual response.
+        include_assistant_prefill (bool): Includes the assistant prefill message if true.
 
     Returns:
         str: The model's response text.
@@ -87,8 +92,13 @@ def _get_completion(
     )
     # Extract text from the first content block
     content_block = message.content[0]
+
     # Type-safe access to text attribute
-    return getattr(content_block, "text", str(content_block))
+    data = [getattr(content_block, "text", str(content_block))]
+
+    if include_assistant_prefill:
+        data.insert(0, assistant_prefill)
+    return "".join(data)
 
 
 def get_completion(

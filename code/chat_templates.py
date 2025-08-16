@@ -29,6 +29,8 @@ SENTENCES = """- I like how cows sound
 - This sentence is about spiders
 - This sentence may appear to be about dogs but it's actually about pigs"""
 
+EMAIL_REWRITE_STYLE = "olde english"
+
 TEMPLATE_DATA = {
     "animal_sound": {
         "template_prefix": "I will tell you the name of an animal. Please respond with the noise that this animal makes:",
@@ -67,9 +69,15 @@ TEMPLATE_DATA = {
         # "template_suffix": 'Use JSON format with the keys as "first_line", "second_line", "third_line" etc.',
         "template_suffix": "",
         "user_input_hint": "Enter a topic and I will create a Haiku: ",
-        # If you want to enforce JSON output (not deterministically, but close to it),
-        # you can prefill the assistant response.
+        # If you want to enforce JSON output (not deterministically, but close to it), you can prefill the assistant response.
         "assistant_prefill": 'Use JSON format with the keys as "first_line", "second_line", "third_line" etc.',
+    },
+    "olde_english_email": {
+        "template_prefix": "Here is an email message:",
+        # "template_suffix": 'Use JSON format with the keys as "first_line", "second_line", "third_line" etc.',
+        "template_suffix": f"Make this email more {EMAIL_REWRITE_STYLE}.",
+        "user_input_hint": "A sample message is already provided [Hi Zack, just pinging you for a quick update on that prompt you were supposed to write.]: ",
+        "assistant_prefill": f"<{EMAIL_REWRITE_STYLE.replace(" ", "_")}_email>",
     },
     "misspelling": {
         "template_prefix": "Hia its me i have a q about dogs jkaerjv",
@@ -123,6 +131,8 @@ def get_chat_template_data(template_name: str) -> dict:
             default_user_input = SENTENCES
         case "misspelling":
             default_user_input = "ar cn brown?"
+        case "olde_english_email":
+            default_user_input = "Hi Zack, just pinging you for a quick update on that prompt you were supposed to write."
         case _:
             default_user_input = ""
 
