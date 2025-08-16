@@ -21,7 +21,7 @@ Functions:
 from api_client import validate_environment_variables
 from chat_basic import basic_chat, basic_chat_loop, basic_chat_template
 from chat_grading import chat_with_grading
-
+from chat_templates import EMAILS
 from constants import SYSTEM_PROMPT_DEFAULT
 
 
@@ -139,7 +139,14 @@ def main():
     # Chapter 6: Precognition (Thinking Step by Step)
     ###
     # basic_chat_template("movie_reviewer", "You are a savvy reader of movie reviews.")
-    basic_chat_template("famous_movie_star")
+    # basic_chat_template("famous_movie_star")
+    # for email in EMAILS:
+    #     basic_chat_template("categorize_emails", default_user_input=email)
+    for email in EMAILS:
+        basic_chat_template(
+            "categorize_emails_letter_response",
+            default_user_input=email,
+        )
 
 
 if __name__ == "__main__":

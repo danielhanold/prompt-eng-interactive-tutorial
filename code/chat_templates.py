@@ -35,6 +35,20 @@ MOVIE_REVIEW_INPUT = """Is this movie review sentiment positive or negative?
 
 This movie blew my mind with its freshness and originality. In totally unrelated news, I have been living under a rock since the year 1900."""
 
+EMAILS = [
+    "Hi -- My Mixmaster4000 is producing a strange noise when I operate it. It also smells a bit smoky and plasticky, like burning electronics.  I need a replacement.",  # (B) Broken or defective item
+    "Can I use my Mixmaster 4000 to mix paint, or is it only meant for mixing food?",  # (A) Pre-sale question OR (D) Other (please explain)
+    "I HAVE BEEN WAITING 4 MONTHS FOR MY MONTHLY CHARGES TO END AFTER CANCELLING!!  WTF IS GOING ON???",  # (C) Billing question
+    "How did I get here I am not good with computer.  Halp.",  # (D) Other (please explain)
+]
+
+EMAIL_CLASSIFICATIONS = """
+    (A) Pre-sale question
+    (B) Broken or defective item
+    (C) Billing question
+    (D) Other (please explain)
+"""
+
 
 TEMPLATE_DATA = {
     "animal_sound": {
@@ -112,10 +126,22 @@ TEMPLATE_DATA = {
         "user_input_hint": "Don't enter anything - default is provided as: ar cn brown?",
         "assistant_prefill": "",
     },
+    "categorize_emails": {
+        "template_prefix": f"Please classify this email into one of the following four categories {EMAIL_CLASSIFICATIONS}:",
+        "template_suffix": "Return only the letter of the category and name of the category",
+        "user_input_hint": "Don't enter anything - default is provided as",
+        "assistant_prefill": "",
+    },
+    "categorize_emails_letter_response": {
+        "template_prefix": f"Please classify this email into one of the following four categories {EMAIL_CLASSIFICATIONS}:",
+        "template_suffix": "Return only the letter wrapped in the following XML tag: <answer>",
+        "user_input_hint": "Don't enter anything - default is provided as",
+        "assistant_prefill": "",
+    },
 }
 
 
-def get_chat_template_data(template_name: str) -> dict:
+def get_chat_template_data(template_name: str, default_user_input="") -> dict:
     """Retrieve template configuration data for a given template name.
 
     This function validates the template name and returns the complete
@@ -130,6 +156,8 @@ def get_chat_template_data(template_name: str) -> dict:
             - "animal_sound": Ask for animal sounds
             - "polite_email": Convert rude emails to polite ones
             - "identify_second_item": Identify second item in predefined list
+        default_user_input (str): Sets the default user input. If this is set,
+            overwrites any templated default user input.
 
     Returns:
         dict: Template configuration containing:
@@ -152,24 +180,22 @@ def get_chat_template_data(template_name: str) -> dict:
         raise ValueError("Template name is not valid.")
 
     # Determine if a default should be provided for the user input in this template.
-    default_user_input = ""
-    match template_name:
-        case "identify_second_item":
-            default_user_input = SENTENCES
-        case "misspelling":
-            default_user_input = "ar cn brown?"
-        case "olde_english_email":
-            default_user_input = "Hi Zack, just pinging you for a quick update on that prompt you were supposed to write."
-        case "stephen_curry_goat":
-            default_user_input = "Who is the best basketball player of all time? Please choose one specific player."
-        case "movie_reviewer":
-            default_user_input = MOVIE_REVIEW_INPUT
-        case "famous_movie_star":
-            default_user_input = (
-                "Name a famous movie starring an actor who was born in the year 1956."
-            )
-        case _:
-            default_user_input = ""
+    if not default_user_input:
+        match template_name:
+            case "identify_second_item":
+                default_user_input = SENTENCES
+            case "misspelling":
+                default_user_input = "ar cn brown?"
+            case "olde_english_email":
+                default_user_input = "Hi Zack, just pinging you for a quick update on that prompt you were supposed to write."
+            case "stephen_curry_goat":
+                default_user_input = "Who is the best basketball player of all time? Please choose one specific player."
+            case "movie_reviewer":
+                default_user_input = MOVIE_REVIEW_INPUT
+            case "famous_movie_star":
+                default_user_input = "Name a famous movie starring an actor who was born in the year 1956."
+            case _:
+                default_user_input = ""
 
     return {
         "template_prefix": TEMPLATE_DATA[template_name]["template_prefix"],

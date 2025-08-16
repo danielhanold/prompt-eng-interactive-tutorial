@@ -147,7 +147,7 @@ def basic_chat(
 
 
 def basic_chat_template(
-    template_name: str, system_prompt="", max_tokens=2000, default_query=""
+    template_name: str, system_prompt="", max_tokens=2000, default_user_input=""
 ):
     """Execute a templated chat interaction using predefined prompt templates.
 
@@ -165,10 +165,8 @@ def basic_chat_template(
             Defaults to "".
         max_tokens (int, optional): Maximum number of tokens in the AI response.
             Defaults to 2000.
-        default_query (str, optional): Default query to use if user provides
-            no input (only for templates that prompt for user input). Defaults to "".
-            Note: This parameter is passed but not directly used; template-specific
-            defaults are retrieved from the template configuration.
+        default_user_input (str, optional): Default query to use if user provides
+            no input. Overwrites any default set for this template.
 
     Returns:
         str: The AI model's response text.
@@ -188,7 +186,7 @@ def basic_chat_template(
     """
 
     # Get template data.
-    template_data = get_chat_template_data(template_name)
+    template_data = get_chat_template_data(template_name, default_user_input)
 
     # Get response from LLM.
     return _basic_chat(
