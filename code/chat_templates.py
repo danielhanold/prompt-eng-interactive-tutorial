@@ -52,6 +52,11 @@ TEMPLATE_DATA = {
         "template_suffix": "Start the response with a header: Your Haiku:",
         "user_input_hint": "Enter a topic and I will create a Haiku: ",
     },
+    "haiku_topic_xml": {
+        "template_prefix": "Create a Haiku based on the following topic:",
+        "template_suffix": "Put it in XML tags.",
+        "user_input_hint": "Enter a topic and I will create a Haiku: ",
+    },
     "misspelling": {
         "template_prefix": "Hia its me i have a q about dogs jkaerjv",
         "template_suffix": "jklmvca tx it help me muhch much atx fst fst answer short short tx",

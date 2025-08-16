@@ -74,7 +74,7 @@ def main():
     # basic_chat()
 
     # Basic chat option with different system prompts.
-    # basic_chat_loop("Your respond should sound like a 3-year old.")
+    # basic_chat_loop("Your response should sound like a grumpy old man.")
 
     # Chat with grading.
     # chat_with_grading("count_to_three")
@@ -122,9 +122,14 @@ def main():
     #     2000,
     #     "Show up at 6am tomorrow because I'm the CEO and I say so.",
     # )
-    # basic_chat_template("identify_second_item")
+    # basic_chat_template("haiku_topic")
     # chat_with_grading("haiku_topic", basic_chat_template)
-    chat_with_grading("misspelling", basic_chat_template)
+    # chat_with_grading("misspelling", basic_chat_template)
+
+    ###
+    # Chapter 5: Formatting Output and Speaking for Claude
+    ###
+    basic_chat_template("haiku_topic_xml")
 
 
 if __name__ == "__main__":

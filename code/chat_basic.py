@@ -80,7 +80,7 @@ def _basic_chat(
 
     # Gather user input, if necessary.
     while not user_input:
-        user_input = input(user_input_hint)
+        user_input = input(f"==> {user_input_hint}")
         if not user_input:
             user_input = default_user_input
         if not user_input:
@@ -94,13 +94,9 @@ def _basic_chat(
             user_promt_suffix,
         ]
     )
-    print(f"User input: {user_input}")
-    print(f"User prompt: {user_prompt}")
+    print(f"\nUser input:    {user_input}")
 
-    print("\n=== Assistant turn ===")
-    response = get_completion(user_prompt, system_prompt, max_tokens)
-    print(response)
-    return response
+    return get_completion(user_prompt, system_prompt, max_tokens)
 
 
 def basic_chat(

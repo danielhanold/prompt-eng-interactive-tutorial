@@ -49,7 +49,7 @@ def validate_environment_variables():
         raise ValueError("ANTHROPIC_MODEL_NAME is not set")
 
 
-def _get_completion(prompt: str, system_prompt: str, max_tokens: int):
+def _get_completion(prompt: str, system_prompt: str, max_tokens: int, prefill: str):
     """Private function to make direct API calls to Anthropic's Claude.
 
     Makes a single API request with fixed temperature of 0.0 for deterministic
@@ -59,6 +59,7 @@ def _get_completion(prompt: str, system_prompt: str, max_tokens: int):
         prompt (str): The user message to send to the model.
         system_prompt (str): System-level instructions for the model.
         max_tokens (int): Maximum number of tokens to generate.
+        prefill (str): Prefill string for assistant response.
 
     Returns:
         str: The model's response text.
@@ -75,7 +76,10 @@ def _get_completion(prompt: str, system_prompt: str, max_tokens: int):
         max_tokens=max_tokens,
         temperature=0.0,
         system=system_prompt,
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {"role": "user", "content": prompt},
+            {"role": "assistant", "content": prefill},
+        ],
     )
     # Extract text from the first content block
     content_block = message.content[0]
@@ -83,7 +87,7 @@ def _get_completion(prompt: str, system_prompt: str, max_tokens: int):
     return getattr(content_block, "text", str(content_block))
 
 
-def get_completion(prompt: str, system_prompt="", max_tokens=2000):
+def get_completion(prompt: str, system_prompt="", max_tokens=2000, prefill=""):
     """Get completion from Anthropic API with optional system prompt.
 
     Public interface for generating AI completions. Automatically uses the
@@ -95,6 +99,7 @@ def get_completion(prompt: str, system_prompt="", max_tokens=2000):
         system_prompt (str, optional): System prompt to use. If empty string,
             uses the default system prompt from constants. Defaults to "".
         max_tokens (int, optional): Maximum tokens in the response. Defaults to 2000.
+        prefill (str, optional): Prefill string for assistant response.
 
     Returns:
         str: The model's response text.
@@ -107,8 +112,16 @@ def get_completion(prompt: str, system_prompt="", max_tokens=2000):
         >>> response = get_completion("What is the capital of France?")
         >>> response = get_completion("Tell me a joke", "You are a comedian", 500)
     """
-    if not system_prompt:  # More Pythonic - handles "", None, etc.
-        return _get_completion(
-            prompt, system_prompt=SYSTEM_PROMPT_DEFAULT, max_tokens=max_tokens
-        )
-    return _get_completion(prompt, system_prompt, max_tokens)
+    # Set a default if no system prompt was provided.
+    if not system_prompt:
+        system_prompt = SYSTEM_PROMPT_DEFAULT
+
+    # Debug messages.
+    print(f"System prompt: {system_prompt}")
+    print(f"User prompt:   {prompt}")
+
+    completion = _get_completion(prompt, system_prompt, max_tokens, prefill)
+
+    print("\n=== Assistant turn ===")
+    print(completion)
+    return completion
