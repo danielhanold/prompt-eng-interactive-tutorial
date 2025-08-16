@@ -129,7 +129,8 @@ def main():
     ###
     # Chapter 5: Formatting Output and Speaking for Claude
     ###
-    basic_chat_template("haiku_topic_xml")
+    # basic_chat_template("haiku_topic_xml")
+    basic_chat_template("haiku_topic_json")
 
 
 if __name__ == "__main__":

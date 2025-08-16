@@ -32,6 +32,7 @@ def _basic_chat(
     user_input_hint="Enter your query: ",
     user_prompt_prefix="",
     user_promt_suffix="",
+    assistant_prefill="",
 ):
     """Private helper function to handle a single chat interaction.
 
@@ -50,6 +51,7 @@ def _basic_chat(
             Defaults to "".
         user_promt_suffix (str, optional): Text to append to the user prompt.
             Defaults to "".
+        assistant_prefill (str, optional): assistant_prefill string for assistant response.
 
     Returns:
         str: The AI model's response text.
@@ -72,6 +74,7 @@ def _basic_chat(
         f"Default User Input: {default_user_input}",
         f"Prompt prefix:      {user_prompt_prefix}",
         f"Prompt suffix:      {user_promt_suffix}",
+        f"Assistant prefill:  {assistant_prefill}",
     ]
     print("\n".join(debug_data), end="\n\n")
 
@@ -96,7 +99,7 @@ def _basic_chat(
     )
     print(f"\nUser input:    {user_input}")
 
-    return get_completion(user_prompt, system_prompt, max_tokens)
+    return get_completion(user_prompt, system_prompt, max_tokens, assistant_prefill)
 
 
 def basic_chat(
@@ -194,6 +197,7 @@ def basic_chat_template(
         template_data["user_input_hint"],
         template_data["template_prefix"],
         template_data["template_suffix"],
+        template_data["assistant_prefill"],
     )
 
 

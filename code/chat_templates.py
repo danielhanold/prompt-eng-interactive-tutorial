@@ -34,11 +34,13 @@ TEMPLATE_DATA = {
         "template_prefix": "I will tell you the name of an animal. Please respond with the noise that this animal makes:",
         "template_suffix": "",
         "user_input_hint": "Chatbot will tell you the noise an animal makes\nEnter the name of an animal: ",
+        "assistant_prefill": "",
     },
     "polite_email": {
         "template_prefix": "For Claude.",
         "template_suffix": "<----- Make this email more polite but don't change anything else about it.",
         "user_input_hint": "Enter a rude email message that should be polished to make it sound more polite: ",
+        "assistant_prefill": "",
     },
     "identify_second_item": {
         "template_prefix": """Below is a list of sentences. Tell me the second item on the list.
@@ -46,21 +48,34 @@ TEMPLATE_DATA = {
 - Each is about an animal, like rabbits.\n""",
         "template_suffix": "",
         "user_input_hint": "Don't enter anything - there are three default sentences defined in code: ",
+        "assistant_prefill": "",
     },
     "haiku_topic": {
         "template_prefix": "Create a Haiku based on the following topic:",
         "template_suffix": "Start the response with a header: Your Haiku:",
         "user_input_hint": "Enter a topic and I will create a Haiku: ",
+        "assistant_prefill": "",
     },
     "haiku_topic_xml": {
         "template_prefix": "Create a Haiku based on the following topic:",
         "template_suffix": "Put it in XML tags.",
         "user_input_hint": "Enter a topic and I will create a Haiku: ",
+        "assistant_prefill": "",
+    },
+    "haiku_topic_json": {
+        "template_prefix": "Create a Haiku based on the following topic:",
+        # "template_suffix": 'Use JSON format with the keys as "first_line", "second_line", "third_line" etc.',
+        "template_suffix": "",
+        "user_input_hint": "Enter a topic and I will create a Haiku: ",
+        # If you want to enforce JSON output (not deterministically, but close to it),
+        # you can prefill the assistant response.
+        "assistant_prefill": 'Use JSON format with the keys as "first_line", "second_line", "third_line" etc.',
     },
     "misspelling": {
         "template_prefix": "Hia its me i have a q about dogs jkaerjv",
         "template_suffix": "jklmvca tx it help me muhch much atx fst fst answer short short tx",
         "user_input_hint": "Don't enter anything - default is provided as: ar cn brown?",
+        "assistant_prefill": "",
     },
 }
 
@@ -116,4 +131,5 @@ def get_chat_template_data(template_name: str) -> dict:
         "template_suffix": TEMPLATE_DATA[template_name]["template_suffix"],
         "user_input_hint": TEMPLATE_DATA[template_name]["user_input_hint"],
         "default_user_input": default_user_input,
+        "assistant_prefill": TEMPLATE_DATA[template_name]["assistant_prefill"],
     }

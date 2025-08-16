@@ -18,3 +18,6 @@ SYSTEM_PROMPT_COMEDIAN = "You are a comedian. You are funny and you make people 
 
 # Define default user inputs.
 DEFAULT_USER_INPUT = "What is Celine Dion's single most popular song?"
+
+# Debug variables.
+DEBUG_MODE = True

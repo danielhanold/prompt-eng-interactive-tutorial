@@ -17,7 +17,7 @@ Environment Variables Required:
     ANTHROPIC_MODEL_NAME: Name of the Claude model to use
 """
 
-from constants import SYSTEM_PROMPT_DEFAULT
+from constants import SYSTEM_PROMPT_DEFAULT, DEBUG_MODE
 from os import environ
 import anthropic
 
@@ -49,7 +49,9 @@ def validate_environment_variables():
         raise ValueError("ANTHROPIC_MODEL_NAME is not set")
 
 
-def _get_completion(prompt: str, system_prompt: str, max_tokens: int, prefill: str):
+def _get_completion(
+    prompt: str, system_prompt: str, max_tokens: int, assistant_prefill: str
+):
     """Private function to make direct API calls to Anthropic's Claude.
 
     Makes a single API request with fixed temperature of 0.0 for deterministic
@@ -59,7 +61,9 @@ def _get_completion(prompt: str, system_prompt: str, max_tokens: int, prefill: s
         prompt (str): The user message to send to the model.
         system_prompt (str): System-level instructions for the model.
         max_tokens (int): Maximum number of tokens to generate.
-        prefill (str): Prefill string for assistant response.
+        assistant_prefill (str): assistant_prefill string for assistant response.
+          Can be used to streer a response in a specific direction or suggest a specific output, e.g. JSON.
+          The assistant prefill will be excluded from the actual response.
 
     Returns:
         str: The model's response text.
@@ -78,7 +82,7 @@ def _get_completion(prompt: str, system_prompt: str, max_tokens: int, prefill: s
         system=system_prompt,
         messages=[
             {"role": "user", "content": prompt},
-            {"role": "assistant", "content": prefill},
+            {"role": "assistant", "content": assistant_prefill},
         ],
     )
     # Extract text from the first content block
@@ -87,7 +91,9 @@ def _get_completion(prompt: str, system_prompt: str, max_tokens: int, prefill: s
     return getattr(content_block, "text", str(content_block))
 
 
-def get_completion(prompt: str, system_prompt="", max_tokens=2000, prefill=""):
+def get_completion(
+    prompt: str, system_prompt="", max_tokens=2000, assistant_prefill=""
+):
     """Get completion from Anthropic API with optional system prompt.
 
     Public interface for generating AI completions. Automatically uses the
@@ -99,7 +105,7 @@ def get_completion(prompt: str, system_prompt="", max_tokens=2000, prefill=""):
         system_prompt (str, optional): System prompt to use. If empty string,
             uses the default system prompt from constants. Defaults to "".
         max_tokens (int, optional): Maximum tokens in the response. Defaults to 2000.
-        prefill (str, optional): Prefill string for assistant response.
+        assistant_prefill (str, optional): assistant_prefill string for assistant response.
 
     Returns:
         str: The model's response text.
@@ -116,12 +122,12 @@ def get_completion(prompt: str, system_prompt="", max_tokens=2000, prefill=""):
     if not system_prompt:
         system_prompt = SYSTEM_PROMPT_DEFAULT
 
+    completion = _get_completion(prompt, system_prompt, max_tokens, assistant_prefill)
+
     # Debug messages.
-    print(f"System prompt: {system_prompt}")
-    print(f"User prompt:   {prompt}")
-
-    completion = _get_completion(prompt, system_prompt, max_tokens, prefill)
-
-    print("\n=== Assistant turn ===")
-    print(completion)
+    if DEBUG_MODE:
+        print(f"System prompt: {system_prompt}")
+        print(f"User prompt:   {prompt}")
+        print(f"\n=== Assistant turn ===")
+        print(completion)
     return completion
