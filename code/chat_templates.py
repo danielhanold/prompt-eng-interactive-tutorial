@@ -66,7 +66,6 @@ TEMPLATE_DATA = {
     },
     "haiku_topic_json": {
         "template_prefix": "Create a Haiku based on the following topic:",
-        # "template_suffix": 'Use JSON format with the keys as "first_line", "second_line", "third_line" etc.',
         "template_suffix": "",
         "user_input_hint": "Enter a topic and I will create a Haiku: ",
         # If you want to enforce JSON output (not deterministically, but close to it), you can prefill the assistant response.
@@ -74,10 +73,15 @@ TEMPLATE_DATA = {
     },
     "olde_english_email": {
         "template_prefix": "Here is an email message:",
-        # "template_suffix": 'Use JSON format with the keys as "first_line", "second_line", "third_line" etc.',
         "template_suffix": f"Make this email more {EMAIL_REWRITE_STYLE}.",
         "user_input_hint": "A sample message is already provided [Hi Zack, just pinging you for a quick update on that prompt you were supposed to write.]: ",
         "assistant_prefill": f"<{EMAIL_REWRITE_STYLE.replace(" ", "_")}_email>",
+    },
+    "stephen_curry_goat": {
+        "template_prefix": "",
+        "template_suffix": "",
+        "user_input_hint": "A sample message is already provided [Who is the best basketball player of all time? Please choose one specific player.]: ",
+        "assistant_prefill": "Stephen Curry is the best basketball player of all time because",
     },
     "misspelling": {
         "template_prefix": "Hia its me i have a q about dogs jkaerjv",
@@ -133,6 +137,8 @@ def get_chat_template_data(template_name: str) -> dict:
             default_user_input = "ar cn brown?"
         case "olde_english_email":
             default_user_input = "Hi Zack, just pinging you for a quick update on that prompt you were supposed to write."
+        case "stephen_curry_goat":
+            default_user_input = "Who is the best basketball player of all time? Please choose one specific player."
         case _:
             default_user_input = ""
 

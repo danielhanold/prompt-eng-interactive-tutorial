@@ -131,7 +131,8 @@ def main():
     ###
     # basic_chat_template("haiku_topic_xml")
     # basic_chat_template("haiku_topic_json")
-    basic_chat_template("olde_english_email")
+    # basic_chat_template("olde_english_email")
+    basic_chat_template("stephen_curry_goat")
 
 
 if __name__ == "__main__":
