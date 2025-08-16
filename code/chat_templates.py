@@ -31,6 +31,11 @@ SENTENCES = """- I like how cows sound
 
 EMAIL_REWRITE_STYLE = "olde english"
 
+MOVIE_REVIEW_INPUT = """Is this movie review sentiment positive or negative?
+
+This movie blew my mind with its freshness and originality. In totally unrelated news, I have been living under a rock since the year 1900."""
+
+
 TEMPLATE_DATA = {
     "animal_sound": {
         "template_prefix": "I will tell you the name of an animal. Please respond with the noise that this animal makes:",
@@ -89,6 +94,12 @@ TEMPLATE_DATA = {
         "user_input_hint": "A sample message is already provided [Who is the best basketball player of all time? Please choose one specific player.]: ",
         "assistant_prefill": "Stephen Curry is the best basketball player of all time because",
     },
+    "movie_reviewer": {
+        "template_prefix": "",
+        "template_suffix": "",
+        "user_input_hint": f"A sample message is already provided [{MOVIE_REVIEW_INPUT}]: ",
+        "assistant_prefill": "",
+    },
     "misspelling": {
         "template_prefix": "Hia its me i have a q about dogs jkaerjv",
         "template_suffix": "jklmvca tx it help me muhch much atx fst fst answer short short tx",
@@ -145,6 +156,8 @@ def get_chat_template_data(template_name: str) -> dict:
             default_user_input = "Hi Zack, just pinging you for a quick update on that prompt you were supposed to write."
         case "stephen_curry_goat":
             default_user_input = "Who is the best basketball player of all time? Please choose one specific player."
+        case "movie_reviewer":
+            default_user_input = MOVIE_REVIEW_INPUT
         case _:
             default_user_input = ""
 

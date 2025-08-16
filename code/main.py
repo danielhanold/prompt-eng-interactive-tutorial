@@ -133,7 +133,12 @@ def main():
     # basic_chat_template("haiku_topic_json")
     # basic_chat_template("olde_english_email")
     # basic_chat_template("stephen_curry_goat")
-    basic_chat_template("haiku_topic_xml_multiple")
+    # basic_chat_template("haiku_topic_xml_multiple")
+
+    ###
+    # Chapter 6: Precognition (Thinking Step by Step)
+    ###
+    basic_chat_template("movie_reviewer", "You are a savvy reader of movie reviews.")
 
 
 if __name__ == "__main__":

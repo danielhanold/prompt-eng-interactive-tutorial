@@ -31,7 +31,7 @@ def _basic_chat(
     default_user_input="",
     user_input_hint="Enter your query: ",
     user_prompt_prefix="",
-    user_promt_suffix="",
+    user_prompt_suffix="",
     assistant_prefill="",
 ):
     """Private helper function to handle a single chat interaction.
@@ -49,7 +49,7 @@ def _basic_chat(
             Defaults to "Enter your query: ".
         user_prompt_prefix (str, optional): Text to prepend to the user prompt.
             Defaults to "".
-        user_promt_suffix (str, optional): Text to append to the user prompt.
+        user_prompt_suffix (str, optional): Text to append to the user prompt.
             Defaults to "".
         assistant_prefill (str, optional): assistant_prefill string for assistant response.
 
@@ -73,7 +73,7 @@ def _basic_chat(
         f"System prompt:      {system_prompt or "None"}",
         f"Default User Input: {default_user_input}",
         f"Prompt prefix:      {user_prompt_prefix}",
-        f"Prompt suffix:      {user_promt_suffix}",
+        f"Prompt suffix:      {user_prompt_suffix}",
         f"Assistant prefill:  {assistant_prefill}",
     ]
     print("\n".join(debug_data), end="\n\n")
@@ -90,13 +90,14 @@ def _basic_chat(
             print("You have to enter something here.")
 
     # Generate prompt based on prefix, user_input, and suffix.
-    user_prompt = " ".join(
-        [
-            user_prompt_prefix,
-            f"<user_input>{user_input}</user_input>",
-            user_promt_suffix,
-        ]
-    )
+    user_prompt_data = []
+    if user_prompt_prefix:
+        user_prompt_data.append(user_prompt_prefix)
+    user_prompt_data.append(f"<user_input>{user_input}</user_input>")
+    if user_prompt_suffix:
+        user_prompt_data.append(user_prompt_suffix)
+
+    user_prompt = " ".join(user_prompt_data)
     print(f"\nUser input:    {user_input}")
 
     return get_completion(user_prompt, system_prompt, max_tokens, assistant_prefill)
