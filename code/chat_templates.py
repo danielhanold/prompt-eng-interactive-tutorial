@@ -100,6 +100,12 @@ TEMPLATE_DATA = {
         "user_input_hint": f"A sample message is already provided [{MOVIE_REVIEW_INPUT}]: ",
         "assistant_prefill": "",
     },
+    "famous_movie_star": {
+        "template_prefix": "",
+        "template_suffix": "First brainstorm about some actors and their birth years in XML tags, then give your answer.",
+        "user_input_hint": f"A sample message is already provided [Name a famous movie starring an actor who was born in the year 1956.]: ",
+        "assistant_prefill": "",
+    },
     "misspelling": {
         "template_prefix": "Hia its me i have a q about dogs jkaerjv",
         "template_suffix": "jklmvca tx it help me muhch much atx fst fst answer short short tx",
@@ -158,6 +164,10 @@ def get_chat_template_data(template_name: str) -> dict:
             default_user_input = "Who is the best basketball player of all time? Please choose one specific player."
         case "movie_reviewer":
             default_user_input = MOVIE_REVIEW_INPUT
+        case "famous_movie_star":
+            default_user_input = (
+                "Name a famous movie starring an actor who was born in the year 1956."
+            )
         case _:
             default_user_input = ""
 

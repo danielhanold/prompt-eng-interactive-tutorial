@@ -138,7 +138,8 @@ def main():
     ###
     # Chapter 6: Precognition (Thinking Step by Step)
     ###
-    basic_chat_template("movie_reviewer", "You are a savvy reader of movie reviews.")
+    # basic_chat_template("movie_reviewer", "You are a savvy reader of movie reviews.")
+    basic_chat_template("famous_movie_star")
 
 
 if __name__ == "__main__":
