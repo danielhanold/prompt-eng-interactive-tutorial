@@ -64,6 +64,12 @@ TEMPLATE_DATA = {
         "user_input_hint": "Enter a topic and I will create a Haiku: ",
         "assistant_prefill": "",
     },
+    "haiku_topic_xml_multiple": {
+        "template_prefix": "Create a Haiku based on the following topic:",
+        "template_suffix": "Put it in XML tags.",
+        "user_input_hint": "Enter a topic and I will create a Haiku: ",
+        "assistant_prefill": "I will give the user two versions, and will use <haiku_a> and <haiku_b> respectively",
+    },
     "haiku_topic_json": {
         "template_prefix": "Create a Haiku based on the following topic:",
         "template_suffix": "",
