@@ -74,6 +74,9 @@ with open("templates/individuals_jobs_description_prefix.txt", "r") as f:
 with open("templates/matterport_suffix.txt", "r") as f:
     MATTERPORT_SUFFIX = f.read()
 
+with open("templates/matterport_10k_filing.txt", "r") as f:
+    MATTERPORT_10K_FILING = f.read()
+
 INDIVIDUALS_JOB_DESCRIPTION_DEFAULT_USER_INPUT = """Oak Valley, a charming small town, is home to a remarkable trio of individuals whose skills and dedication have left a lasting impact on the community.
 At the town's bustling farmer's market, you'll find Laura Simmons, a passionate organic farmer known for her delicious and sustainably grown produce. Her dedication to promoting healthy eating has inspired the town to embrace a more eco-conscious lifestyle.
 In Oak Valley's community center, Kevin Alvarez, a skilled dance instructor, has brought the joy of movement to people of all ages. His inclusive dance classes have fostered a sense of unity and self-expression among residents, enriching the local arts scene.
@@ -205,6 +208,15 @@ TEMPLATE_DATA = {
             Then, in XML tags, pull the most relevant quote from the document and consider whether it answers the user's question or whether it lacks sufficient detail.
             Then write a brief numerical answer in XML tags.
         """,
+        "assistant_prefill": "",
+    },
+    "matterport_subscriber_growth": {
+        "template_prefix": "",
+        "template_suffix": MATTERPORT_10K_FILING,
+        "user_input_hint": "Don't enter anything - default is provided as.",
+        "default_user_input": """From December 2018 to December 2022, by what amount did Matterport's subscribers grow?
+            Show your train of thought by showing the subscriber numbers in all years.
+            Calculate the multiple it grew by, e.g. 10-fold""",
         "assistant_prefill": "",
     },
 }

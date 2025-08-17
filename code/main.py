@@ -232,7 +232,26 @@ def main():
     # Example for creating halluciations (used to work - not any longer on 8/17/2025)
     # basic_chat(default_user_input="Who is the heaviest hippo of all time?")
 
-    basic_chat_template("matterport_subscriber_base")
+    # basic_chat_template("matterport_subscriber_base")
+
+    # Beyonce's 7th album: Renaissance, released 2022
+    # Beyonce's 8th album: Cowboy Carter, released 2024
+    # Answer should be 2024.
+    # basic_chat(
+    #     default_user_input="In what year did star performer Beyoncé release her eighth studio album?"
+    # )
+    # basic_chat(
+    #     default_user_input="""In what year did star performer Beyoncé release her eighth studio album?
+    #         Prior to answering, consider if you know all 8 currently released albums.
+    #         Only include albums that she released by herself, not by "The Carters".
+    #         Confirm that all albums are truly studio albums.
+    #         If the eight studio album is not released yet, state so clearly.
+    #     """,
+    #     system_prompt="",
+    # )
+
+    # Find subscriber growth rate for Matterport.
+    basic_chat_template("matterport_subscriber_growth")
 
 
 if __name__ == "__main__":
