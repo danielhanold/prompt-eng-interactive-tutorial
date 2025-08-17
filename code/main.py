@@ -161,12 +161,21 @@ def main():
 
     # basic_chat_template("individuals_professions")
 
-    for email in EMAILS:
-        basic_chat_template(
-            "categorize_emails_few_shot_prompting",
-            default_user_input=email,
-            system_prompt="Stick to the exact instructions provided in the user prompt",
-        )
+    # for email in EMAILS:
+    #     basic_chat_template(
+    #         "categorize_emails_few_shot_prompting",
+    #         default_user_input=email,
+    #         system_prompt="Stick to the exact instructions provided in the user prompt",
+    #     )
+
+    ###
+    # Chapter 8: Avoiding Hallucinations
+    ###
+
+    # Example for creating halluciations (used to work - not any longer on 8/17/2025)
+    # basic_chat(default_user_input="Who is the heaviest hippo of all time?")
+
+    basic_chat_template("matterport_subscriber_base")
 
 
 if __name__ == "__main__":

@@ -71,6 +71,9 @@ EMAIL_CLASSIFICATION_FEW_SHOT_PROMPTING_EXAMPLES = """
 with open("templates/individuals_jobs_description_prefix.txt", "r") as f:
     INDIVIDUALS_JOB_DESCRIPTION_PREFIX = f.read()
 
+with open("templates/matterport_suffix.txt", "r") as f:
+    MATTERPORT_SUFFIX = f.read()
+
 INDIVIDUALS_JOB_DESCRIPTION_DEFAULT_USER_INPUT = """Oak Valley, a charming small town, is home to a remarkable trio of individuals whose skills and dedication have left a lasting impact on the community.
 At the town's bustling farmer's market, you'll find Laura Simmons, a passionate organic farmer known for her delicious and sustainably grown produce. Her dedication to promoting healthy eating has inspired the town to embrace a more eco-conscious lifestyle.
 In Oak Valley's community center, Kevin Alvarez, a skilled dance instructor, has brought the joy of movement to people of all ages. His inclusive dance classes have fostered a sense of unity and self-expression among residents, enriching the local arts scene.
@@ -191,6 +194,17 @@ TEMPLATE_DATA = {
         "template_suffix": "List all key individuals and their professions.",
         "user_input_hint": "Don't enter anything - default is provided as.",
         "default_user_input": INDIVIDUALS_JOB_DESCRIPTION_DEFAULT_USER_INPUT,
+        "assistant_prefill": "",
+    },
+    "matterport_subscriber_base": {
+        "template_prefix": "",
+        "template_suffix": MATTERPORT_SUFFIX,
+        "user_input_hint": "Don't enter anything - default is provided as.",
+        "default_user_input": """What was Matterport's subscriber base on the precise date of May 31, 2020?
+            Please read the below document. Then write a brief numerical answer inside tags.
+            Then, in XML tags, pull the most relevant quote from the document and consider whether it answers the user's question or whether it lacks sufficient detail.
+            Then write a brief numerical answer in XML tags.
+        """,
         "assistant_prefill": "",
     },
 }
