@@ -159,7 +159,14 @@ def main():
     #     Q: Will Santa bring me presents on Christmas?"""
     # basic_chat(default_user_input=santa_prompt)
 
-    basic_chat_template("individuals_professions")
+    # basic_chat_template("individuals_professions")
+
+    for email in EMAILS:
+        basic_chat_template(
+            "categorize_emails_few_shot_prompting",
+            default_user_input=email,
+            system_prompt="Stick to the exact instructions provided in the user prompt",
+        )
 
 
 if __name__ == "__main__":

@@ -49,6 +49,25 @@ EMAIL_CLASSIFICATIONS = """
     (D) Other (please explain)
 """
 
+EMAIL_CLASSIFICATION_FEW_SHOT_PROMPTING_EXAMPLES = """
+    Email Content: Can I use my Mixmaster 4000 to mix paint, or is it only meant for mixing food?
+
+    Category:
+    Pre-sale question
+
+    Classification:
+    A
+
+
+    Email Content: I HAVE BEEN WAITING 4 MONTHS FOR MY MONTHLY CHARGES TO END AFTER CANCELLING!!  WTF IS GOING ON???
+
+    Category:
+    Billing qusetion
+
+    Classification:
+    C
+"""
+
 with open("templates/individuals_jobs_description_prefix.txt", "r") as f:
     INDIVIDUALS_JOB_DESCRIPTION_PREFIX = f.read()
 
@@ -156,6 +175,13 @@ TEMPLATE_DATA = {
     "categorize_emails_letter_response": {
         "template_prefix": f"Please classify this email into one of the following four categories {EMAIL_CLASSIFICATIONS}:",
         "template_suffix": "Return only the letter wrapped in the following XML tag: <answer>",
+        "user_input_hint": "Don't enter anything - default is provided as",
+        "default_user_input": "",
+        "assistant_prefill": "",
+    },
+    "categorize_emails_few_shot_prompting": {
+        "template_prefix": EMAIL_CLASSIFICATION_FEW_SHOT_PROMPTING_EXAMPLES,
+        "template_suffix": f"Please classify this email into one of the following four categories {EMAIL_CLASSIFICATIONS}. Follow the same output format as above, including whitespacing and line breaks. The category cannot be a single letter",
         "user_input_hint": "Don't enter anything - default is provided as",
         "default_user_input": "",
         "assistant_prefill": "",

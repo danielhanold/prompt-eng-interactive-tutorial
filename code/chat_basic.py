@@ -199,9 +199,7 @@ def basic_chat_template(
     # Get template data.
     template_data = get_chat_template_data(template_name, default_user_input)
 
-    print(template_data)
-
-    # Get response from LLM.)
+    # Get response from LLM.
     return _basic_chat(
         system_prompt,
         max_tokens,
