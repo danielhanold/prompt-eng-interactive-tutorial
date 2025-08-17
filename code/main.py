@@ -84,13 +84,35 @@ def main():
 
     ###
     # Chapter 2: Being Clear and Direct
+    #
+    # Overview
+    #
+    # Think of Claude like any other human that is new to the job. Claude has no context on what to do aside from what you literally tell it.
+    # Just as when you instruct a human for the first time on a task, the more you explain exactly what you want in a straightforward manner to Claude,
+    # the better and more accurate Claude's response will be." When in doubt, follow the Golden Rule of Clear Prompting:
+    #
+    # Show your prompt to a colleague or friend and have them follow the instructions themselves
+    # to see if they can produce the result you want. If they're confused, Claude's confused.
+    #
     ###
+
     # basic_chat_loop("", 4000)
     # chat_with_grading("more_than_800_words")
 
     ###
     # Chapter 3: Role prompting
+    #
+    # Overview
+    # It's sometimes important to prompt Claude to inhabit a specific role (including all necessary context).
+    # This is also known as role prompting. The more detail to the role context, the better.
+    #
+    # Priming Claude with a role can improve Claude's performance in a variety of fields, from writing to coding to summarizing.
+    # It's like how humans can sometimes be helped when told to "think like a ______".
+    # Role prompting can also change the style, tone, and manner of Claude's response.
+    #
+    # Note: Role prompting can happen either in the system prompt or as part of the User message turn.
     ###
+
     # basic_chat("You are a cat.", 2000, "What do you think about skateboarding")
     # basic_chat(
     #     "you are a cat talking to a crowd of skateboarders.",
@@ -114,7 +136,15 @@ def main():
 
     ###
     # Chapter 4: Separating Data & Instructions
+    #
+    # Overview
+    # Oftentimes, we don't want to write full prompts, but instead want prompt templates that can be modified later with additional input data before submitting to Claude.
+    # This might come in handy if you want Claude to do the same thing every time, but the data that Claude uses for its task might be different each time.
+    # Luckily, we can do this pretty easily by separating the fixed skeleton of the prompt from variable user input,
+    # then substituting the user input into the prompt before sending the full prompt to Claude.
+    #
     ###
+
     # basic_chat_template("animal_sound")
     # basic_chat_template(
     #     "polite_email",
@@ -128,6 +158,13 @@ def main():
 
     ###
     # Chapter 5: Formatting Output and Speaking for Claude
+    #
+    # Overview
+    # Claude can format its output in a wide variety of ways. You just need to ask for it to do so!
+    # One of these ways is by using XML tags to separate out the response from any other superfluous text.
+    # You've already learned that you can use XML tags to make your prompt clearer and more parseable to Claude.
+    # It turns out, you can also ask Claude to use XML tags to make its output clearer and more easily understandable to humans.
+    #
     ###
     # basic_chat_template("haiku_topic_xml")
     # basic_chat_template("haiku_topic_json")
@@ -137,7 +174,14 @@ def main():
 
     ###
     # Chapter 6: Precognition (Thinking Step by Step)
+    #
+    # Overview
+    # Giving Claude time to think step by step sometimes makes Claude more accurate, particularly for complex tasks.
+    # However, thinking only counts when it's out loud. You cannot ask Claude to think but output only the answer -
+    # in this case, no thinking has actually occurred.
+    #
     ###
+
     # basic_chat_template("movie_reviewer", "You are a savvy reader of movie reviews.")
     # basic_chat_template("famous_movie_star")
     # for email in EMAILS:
@@ -150,6 +194,13 @@ def main():
 
     ###
     # Chapter 7: Few-Shot Prompting
+    #
+    # Overview:
+    # Giving Claude examples of how you want it to behave (or how you want it not to behave) is extremely effective for:
+    # Getting the right answer
+    # Getting the answer in the right format
+    # This sort of prompting is also called "few shot prompting". You might also encounter the phrase "zero-shot" or "n-shot" or "one-shot". The number of "shots" refers to how many examples are used within the prompt.
+    #
     ###
 
     # You could take the time to describe your desired tone, but it's much easier just to give Claude a few examples of ideal responses.
@@ -170,6 +221,12 @@ def main():
 
     ###
     # Chapter 8: Avoiding Hallucinations
+    #
+    # Overview:
+    # Techniques you can use to minimize hallucinations. Below, we'll go over a few of these techniques, namely:
+    # 1. Giving Claude the option to say it doesn't know the answer to a question
+    # 2. Asking Claude to find evidence before answering
+    #
     ###
 
     # Example for creating halluciations (used to work - not any longer on 8/17/2025)
