@@ -90,7 +90,7 @@ def _get_completion(
 
 def get_completion(
     prompt: str,
-    system_prompt="",
+    system_prompt=None,
     max_tokens=2000,
     assistant_prefill="",
     include_assistant_prefill=True,
@@ -103,7 +103,7 @@ def get_completion(
 
     Args:
         prompt (str): The user prompt to send to the model.
-        system_prompt (str, optional): System prompt to use. If empty string,
+        system_prompt (str or None, optional): System prompt to use. If None,
             uses the default system prompt from constants. Defaults to "".
         max_tokens (int, optional): Maximum tokens in the response. Defaults to 2000.
         assistant_prefill (str, optional): assistant_prefill string for assistant response.
@@ -121,7 +121,8 @@ def get_completion(
         >>> response = get_completion("Tell me a joke", "You are a comedian", 500)
     """
     # Set a default if no system prompt was provided.
-    if not system_prompt:
+    # An empty string qualifies as a sytem prompt.
+    if system_prompt is None:
         system_prompt = SYSTEM_PROMPT_DEFAULT
 
     # Get full message.

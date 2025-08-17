@@ -27,7 +27,7 @@ DEFAULT_USER_INPUT = "What is Celine Dion's single most popular song?"
 
 
 def _basic_chat(
-    system_prompt: str,
+    system_prompt: str | None,
     max_tokens: int,
     default_user_input="",
     user_input_hint="Enter your query: ",
@@ -42,7 +42,7 @@ def _basic_chat(
     constructs a formatted prompt with optional prefix and suffix elements.
 
     Args:
-        system_prompt (str): The system prompt to use for the AI model.
+        system_prompt (str | None): The system prompt to use for the AI model.
         max_tokens (int): Maximum number of tokens in the AI response.
         default_user_input (str, optional): Default user input to use if user
             provides no input. Defaults to "".
@@ -72,7 +72,7 @@ def _basic_chat(
     debug_data = [
         "=== User turn ===",
         f"Max tokens:         {max_tokens}",
-        f"System prompt:      {system_prompt or "None"}",
+        f"System prompt:      {system_prompt}",
         f"Default User Input: {textwrap.shorten(default_user_input, truncate_width)}",
         f"Prompt prefix:      {textwrap.shorten(user_prompt_prefix, truncate_width)}",
         f"Prompt suffix:      {textwrap.shorten(user_prompt_suffix, truncate_width)}",
@@ -106,7 +106,7 @@ def _basic_chat(
 
 
 def basic_chat(
-    system_prompt="",
+    system_prompt=None,
     max_tokens=2000,
     default_user_input=DEFAULT_USER_INPUT,
     user_input_hint="",
@@ -119,8 +119,9 @@ def basic_chat(
     for single-shot interactions.
 
     Args:
-        system_prompt (str, optional): System prompt for the AI model.
-            If empty string, uses the default system prompt. Defaults to "".
+        system_prompt (str | None, optional): System prompt for the AI model.
+            If None, uses the default system prompt. If empty string, uses no system prompt.
+            Defaults to None.
         max_tokens (int, optional): Maximum number of tokens in the response.
             Defaults to 2000.
         default_user_input (str, optional): Default user input to use if user provides
@@ -158,7 +159,7 @@ def basic_chat(
 
 
 def basic_chat_template(
-    template_name: str, system_prompt="", max_tokens=2000, default_user_input=""
+    template_name: str, system_prompt=None, max_tokens=2000, default_user_input=""
 ):
     """Execute a templated chat interaction using predefined prompt templates.
 
@@ -172,8 +173,9 @@ def basic_chat_template(
             - "animal_sound": Prompts for animal name, asks for the sound it makes
             - "polite_email": Prompts for rude email, asks to make it polite
             - "identify_second_item": Uses predefined sentences, asks for second item
-        system_prompt (str, optional): System prompt for the AI model.
-            Defaults to "".
+        system_prompt (str | None, optional): System prompt for the AI model.
+            If None, uses the default system prompt. If empty string, uses no system prompt.
+            Defaults to None.
         max_tokens (int, optional): Maximum number of tokens in the AI response.
             Defaults to 2000.
         default_user_input (str, optional): Default query to use if user provides
@@ -212,7 +214,7 @@ def basic_chat_template(
 
 
 def basic_chat_loop(
-    system_prompt="",
+    system_prompt=None,
     max_tokens=2000,
     default_user_input=DEFAULT_USER_INPUT,
     user_input_hint="",
@@ -225,8 +227,9 @@ def basic_chat_loop(
     parameter and auto-generates appropriate prompts.
 
     Args:
-        system_prompt (str, optional): System prompt for the AI model.
-            If empty string, uses the default system prompt. Defaults to "".
+        system_prompt (str | None, optional): System prompt for the AI model.
+            If None, uses the default system prompt. If empty string, uses no system prompt.
+            Defaults to None.
         max_tokens (int, optional): Maximum number of tokens in each response.
             Defaults to 2000.
         default_user_input (str, optional): Default user input to use if user provides

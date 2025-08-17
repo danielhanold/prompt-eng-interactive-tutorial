@@ -81,7 +81,7 @@ def grade_exercise(text: str, variant: str):
             return None  # Unknown variant
 
 
-def chat_with_grading(variant, cb_func, system_prompt="", input_prompt=""):
+def chat_with_grading(variant, cb_func, system_prompt=None, input_prompt=""):
     """Execute a chat interaction with automatic grading of the AI response.
 
     This function orchestrates a complete chat workflow that includes user input,
@@ -100,7 +100,7 @@ def chat_with_grading(variant, cb_func, system_prompt="", input_prompt=""):
         cb_func (callable): Callback function that handles the actual chat
             interaction. Should accept (system_prompt, max_tokens, default_user_input, input_prompt)
             and return the AI's response as a string. Typically basic_chat or similar.
-        system_prompt (str, optional): System-level instructions for the AI
+        system_prompt (str or None, optional): System-level instructions for the AI
             model. Defaults to empty string.
         input_prompt (str, optional): Custom prompt text to display to user.
             If empty, auto-generates prompt with variant description. Defaults to "".
