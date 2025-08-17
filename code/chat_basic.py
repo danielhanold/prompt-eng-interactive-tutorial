@@ -17,6 +17,7 @@ Constants:
     DEFAULT_USER_INPUT: Default question used when user provides no input
 """
 
+import textwrap
 from api_client import get_completion
 from chat_templates import get_chat_template_data
 
@@ -67,14 +68,15 @@ def _basic_chat(
         The user prompt is formatted as: prefix + <user_input>input</user_input> + suffix
     """
     print("\n----------------------------------------------------------------\n")
+    truncate_width = 120
     debug_data = [
         "=== User turn ===",
         f"Max tokens:         {max_tokens}",
         f"System prompt:      {system_prompt or "None"}",
-        f"Default User Input: {default_user_input}",
-        f"Prompt prefix:      {user_prompt_prefix}",
-        f"Prompt suffix:      {user_prompt_suffix}",
-        f"Assistant prefill:  {assistant_prefill}",
+        f"Default User Input: {textwrap.shorten(default_user_input, truncate_width)}",
+        f"Prompt prefix:      {textwrap.shorten(user_prompt_prefix, truncate_width)}",
+        f"Prompt suffix:      {textwrap.shorten(user_prompt_suffix, truncate_width)}",
+        f"Assistant prefill:  {textwrap.shorten(assistant_prefill, truncate_width)}",
     ]
     print("\n".join(debug_data), end="\n\n")
 
@@ -108,6 +110,7 @@ def basic_chat(
     max_tokens=2000,
     default_user_input=DEFAULT_USER_INPUT,
     user_input_hint="",
+    assistant_prefill="",
 ):
     """Execute a single chat interaction with the AI model.
 
@@ -143,7 +146,15 @@ def basic_chat(
         )
 
     # Get response from LLM.
-    return _basic_chat(system_prompt, max_tokens, default_user_input, user_input_hint)
+    return _basic_chat(
+        system_prompt,
+        max_tokens,
+        default_user_input,
+        user_input_hint,
+        "",
+        "",
+        assistant_prefill,
+    )
 
 
 def basic_chat_template(
@@ -188,7 +199,9 @@ def basic_chat_template(
     # Get template data.
     template_data = get_chat_template_data(template_name, default_user_input)
 
-    # Get response from LLM.
+    print(template_data)
+
+    # Get response from LLM.)
     return _basic_chat(
         system_prompt,
         max_tokens,

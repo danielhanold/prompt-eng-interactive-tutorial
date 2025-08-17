@@ -142,11 +142,24 @@ def main():
     # basic_chat_template("famous_movie_star")
     # for email in EMAILS:
     #     basic_chat_template("categorize_emails", default_user_input=email)
-    for email in EMAILS:
-        basic_chat_template(
-            "categorize_emails_letter_response",
-            default_user_input=email,
-        )
+    # for email in EMAILS:
+    #     basic_chat_template(
+    #         "categorize_emails_letter_response",
+    #         default_user_input=email,
+    #     )
+
+    ###
+    # Chapter 7: Few-Shot Prompting
+    ###
+
+    # You could take the time to describe your desired tone, but it's much easier just to give Claude a few examples of ideal responses.
+    # santa_prompt = """Please complete the conversation by writing the next line, speaking as "A".
+    #     Q: Is the tooth fairy real?
+    #     A: Of course, sweetie. Wrap up your tooth and put it under your pillow tonight. There might be something waiting for you in the morning.
+    #     Q: Will Santa bring me presents on Christmas?"""
+    # basic_chat(default_user_input=santa_prompt)
+
+    basic_chat_template("individuals_professions")
 
 
 if __name__ == "__main__":
