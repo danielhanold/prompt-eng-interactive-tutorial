@@ -23,6 +23,7 @@ from chat_basic import basic_chat, basic_chat_loop, basic_chat_template
 from chat_grading import chat_with_grading
 from chat_templates import EMAILS
 from constants import SYSTEM_PROMPT_DEFAULT
+from complex_prompts.complex_prompt_data import compose_complex_prompt
 
 
 def main():
@@ -251,7 +252,18 @@ def main():
     # )
 
     # Find subscriber growth rate for Matterport.
-    basic_chat_template("matterport_subscriber_growth")
+    # basic_chat_template("matterport_subscriber_growth")
+
+    ###
+    # Chapter 9: Complex Prompts from Scratch
+    #
+    # Overview:
+    # Techniques you can use as a guided structure that we recommend for complex prompts
+    # 1. The ordering matters for some elements, not for others
+    # 2. It is usually best to use many prompt elements to get your prompt working first, then refine and slim down your prompt afterward.
+    #
+    ###
+    compose_complex_prompt("career_coach")
 
 
 if __name__ == "__main__":

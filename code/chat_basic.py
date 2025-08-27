@@ -34,6 +34,7 @@ def _basic_chat(
     user_prompt_prefix="",
     user_prompt_suffix="",
     assistant_prefill="",
+    extended_debug_data=False,
 ):
     """Private helper function to handle a single chat interaction.
 
@@ -69,15 +70,26 @@ def _basic_chat(
     """
     print("\n----------------------------------------------------------------\n")
     truncate_width = 120
-    debug_data = [
-        "=== User turn ===",
-        f"Max tokens:         {max_tokens}",
-        f"System prompt:      {system_prompt}",
-        f"Default User Input: {textwrap.shorten(default_user_input, truncate_width)}",
-        f"Prompt prefix:      {textwrap.shorten(user_prompt_prefix, truncate_width)}",
-        f"Prompt suffix:      {textwrap.shorten(user_prompt_suffix, truncate_width)}",
-        f"Assistant prefill:  {textwrap.shorten(assistant_prefill, truncate_width)}",
-    ]
+    if extended_debug_data:
+        debug_data = [
+            "=== User turn ===",
+            f"Max tokens:         {max_tokens}",
+            f"System prompt:      {system_prompt}",
+            f"Default User Input: {default_user_input}",
+            f"Prompt prefix:      {user_prompt_prefix}",
+            f"Prompt suffix:      {user_prompt_suffix}",
+            f"Assistant prefill:  {assistant_prefill}",
+        ]
+    else:
+        debug_data = [
+            "=== User turn ===",
+            f"Max tokens:         {max_tokens}",
+            f"System prompt:      {system_prompt}",
+            f"Default User Input: {textwrap.shorten(default_user_input, truncate_width)}",
+            f"Prompt prefix:      {textwrap.shorten(user_prompt_prefix, truncate_width)}",
+            f"Prompt suffix:      {textwrap.shorten(user_prompt_suffix, truncate_width)}",
+            f"Assistant prefill:  {textwrap.shorten(assistant_prefill, truncate_width)}",
+        ]
     print("\n".join(debug_data), end="\n\n")
 
     # Allow downstream functions to provide default user input, which will skip gathering user input.
@@ -156,6 +168,12 @@ def basic_chat(
         "",
         assistant_prefill,
     )
+
+
+def complex_chat(
+    personal: str, system_prompt=None, max_tokens=2000, default_user_input=""
+):
+    return None
 
 
 def basic_chat_template(
